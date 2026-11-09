@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T08:39:36.956906+00:00",
+  "title": "Design System: 3dF Checklist",
+  "extensions": {
+    "colorMeta": {
+      "negro": {
+        "role": "primary",
+        "displayName": "Negro tinta",
+        "canonical": "#000000",
+        "tonalRamp": [
+          "#000000",
+          "#222222",
+          "#444444",
+          "#6b6b6b",
+          "#b5b5b5",
+          "#dcdcdc",
+          "#f3f3f3",
+          "#ffffff"
+        ]
+      },
+      "blanco": {
+        "role": "neutral",
+        "displayName": "Blanco hoja",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#000000",
+          "#222222",
+          "#444444",
+          "#6b6b6b",
+          "#b5b5b5",
+          "#dcdcdc",
+          "#f3f3f3",
+          "#ffffff"
+        ]
+      },
+      "gris-1": {
+        "role": "neutral",
+        "displayName": "Gris renglón",
+        "canonical": "#f3f3f3",
+        "tonalRamp": [
+          "#000000",
+          "#222222",
+          "#444444",
+          "#6b6b6b",
+          "#b5b5b5",
+          "#dcdcdc",
+          "#f3f3f3",
+          "#ffffff"
+        ]
+      },
+      "gris-2": {
+        "role": "neutral",
+        "displayName": "Gris trazo",
+        "canonical": "#dcdcdc",
+        "tonalRamp": [
+          "#000000",
+          "#222222",
+          "#444444",
+          "#6b6b6b",
+          "#b5b5b5",
+          "#dcdcdc",
+          "#f3f3f3",
+          "#ffffff"
+        ]
+      },
+      "gris-3": {
+        "role": "neutral",
+        "displayName": "Gris lápiz",
+        "canonical": "#6b6b6b",
+        "tonalRamp": [
+          "#000000",
+          "#222222",
+          "#444444",
+          "#6b6b6b",
+          "#b5b5b5",
+          "#dcdcdc",
+          "#f3f3f3",
+          "#ffffff"
+        ]
+      },
+      "gris-4": {
+        "role": "neutral",
+        "displayName": "Gris grafito",
+        "canonical": "#444444",
+        "tonalRamp": [
+          "#000000",
+          "#222222",
+          "#444444",
+          "#6b6b6b",
+          "#b5b5b5",
+          "#dcdcdc",
+          "#f3f3f3",
+          "#ffffff"
+        ]
+      },
+      "marcador-rojo": {
+        "role": "tertiary",
+        "displayName": "Marcador rojo (solo editor de fotos)",
+        "canonical": "#e11d1d",
+        "tonalRamp": [
+          "#3d0707",
+          "#6b0d0d",
+          "#9a1414",
+          "#e11d1d",
+          "#ef5a5a",
+          "#f68f8f",
+          "#fbc4c4",
+          "#fdeaea"
+        ]
+      },
+      "marcador-amarillo": {
+        "role": "tertiary",
+        "displayName": "Marcador amarillo (solo editor de fotos)",
+        "canonical": "#ffd400",
+        "tonalRamp": [
+          "#3d3300",
+          "#6b5900",
+          "#a38800",
+          "#ffd400",
+          "#ffe04d",
+          "#ffe980",
+          "#fff2b3",
+          "#fffae6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Cifras",
+        "purpose": "Totales del resumen; tabulares."
+      },
+      "headline": {
+        "displayName": "Título app",
+        "purpose": "CHECKLIST TAREAS en el encabezado."
+      },
+      "title": {
+        "displayName": "Título de panel",
+        "purpose": "Obras, avisos, secciones."
+      },
+      "body": {
+        "displayName": "Texto",
+        "purpose": "Texto base; celdas en 13px (16px en celular)."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Botones, pestañas, selects."
+      },
+      "label": {
+        "displayName": "Rótulo de grupo",
+        "purpose": "Títulos de grupo en mayúsculas."
+      },
+      "cifra-tarjeta": {
+        "displayName": "Cifra de tarjeta",
+        "purpose": "Cifras del dashboard."
+      },
+      "titulo-modal": {
+        "displayName": "Título de modal",
+        "purpose": "Encabezado de paneles superpuestos."
+      },
+      "cifra-obra": {
+        "displayName": "Porcentaje de obra",
+        "purpose": "Avance en el panel Obras."
+      },
+      "glifo": {
+        "displayName": "Glifo",
+        "purpose": "★ importante y × cerrar."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Metadatos y notas."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Rótulos de campo, nombres de foto, estado de Drive."
+      }
+    },
+    "shadows": [
+      {
+        "name": "marca-importante",
+        "value": "inset 4px 0 0 #000",
+        "purpose": "Barra izquierda de pestañas y filas importantes. Única sombra permitida."
+      }
+    ],
+    "motion": [
+      {
+        "name": "avance",
+        "value": "width .35s ease",
+        "purpose": "Relleno de la barra de avance; se desactiva con prefers-reduced-motion."
+      },
+      {
+        "name": "presion",
+        "value": "translateY(1px)",
+        "purpose": "Botón en :active."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "movil",
+        "value": "520px"
+      },
+      {
+        "name": "tarjetas",
+        "value": "820px"
+      },
+      {
+        "name": "controles",
+        "value": "980px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Botón por defecto: caja blanca con borde negro de 2px.",
+      "html": "<button class=\"ds-btn\">Exportar PDF</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;font-family:Archivo,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:13px;min-height:36px;padding:8px 12px;background:#fff;color:#000;border:2px solid #000;border-radius:0;cursor:pointer}.ds-btn:active{transform:translateY(1px)}.ds-btn:focus-visible{outline:2px solid #000;outline-offset:2px}.ds-btn:disabled{opacity:.55}"
+    },
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "button-primario",
+      "description": "Acción principal: invertido.",
+      "html": "<button class=\"ds-btn-pri\">+ Agregar tarea</button>",
+      "css": ".ds-btn-pri{display:inline-flex;align-items:center;justify-content:center;font-family:Archivo,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:13px;min-height:36px;padding:8px 12px;background:#000;color:#fff;border:2px solid #000;border-radius:0;cursor:pointer}.ds-btn-pri:active{transform:translateY(1px)}.ds-btn-pri:focus-visible{outline:2px solid #000;outline-offset:2px}"
+    },
+    {
+      "name": "Búsqueda",
+      "kind": "input",
+      "refersTo": "input-campo",
+      "description": "Campo suelto con borde de 2px.",
+      "html": "<input class=\"ds-input\" placeholder=\"Buscar tarea, rubro, contratista…\">",
+      "css": ".ds-input{font-family:Archivo,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;font-size:13px;min-height:36px;padding:8px 10px;border:2px solid #000;background:#fff;color:#000;border-radius:0;width:260px}.ds-input::placeholder{color:#6b6b6b}.ds-input:focus-visible{outline:2px solid #000;outline-offset:2px}"
+    },
+    {
+      "name": "Pestañas",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "Fichas rectas sobre una línea negra; la activa va invertida y la importante lleva barra de 4px.",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab ds-act\">Estructura</button><button class=\"ds-tab ds-imp\">Terminaciones</button><button class=\"ds-tab\">+</button></div>",
+      "css": ".ds-tabs{display:flex;gap:6px;border-bottom:2px solid #000;font-family:Archivo,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif}.ds-tab{font:inherit;font-weight:600;min-height:42px;padding:0 14px;background:#fff;color:#000;border:2px solid #000;border-bottom:0;border-radius:0;cursor:pointer}.ds-tab:hover{background:#f3f3f3}.ds-tab:focus-visible{outline:2px solid #000;outline-offset:2px}.ds-act,.ds-act:hover{background:#000;color:#fff;font-weight:800}.ds-imp{box-shadow:inset 4px 0 0 #000;font-weight:800}"
+    },
+    {
+      "name": "Control segmentado",
+      "kind": "chip",
+      "refersTo": "button",
+      "description": "Filtro Todas / Pendientes / Hechas.",
+      "html": "<div class=\"ds-seg\"><button aria-pressed=\"true\">Todas</button><button aria-pressed=\"false\">Pendientes</button><button aria-pressed=\"false\">Hechas</button></div>",
+      "css": ".ds-seg{display:inline-flex;border:2px solid #000;font-family:Archivo,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif}.ds-seg button{font:inherit;font-weight:600;font-size:12px;min-height:32px;padding:6px 10px;background:#fff;color:#000;border:0;border-right:2px solid #000;cursor:pointer}.ds-seg button:last-child{border-right:0}.ds-seg button[aria-pressed=true]{background:#000;color:#fff}.ds-seg button:focus-visible{outline:2px solid #000;outline-offset:-4px}"
+    },
+    {
+      "name": "Estado SI / NO",
+      "kind": "custom",
+      "refersTo": "estado-si",
+      "description": "Alterna si la tarea está ejecutada; SI va invertido.",
+      "html": "<div class=\"ds-est-wrap\"><button class=\"ds-est\" data-v=\"NO\">NO</button><button class=\"ds-est\" data-v=\"SI\">SI</button></div>",
+      "css": ".ds-est-wrap{display:flex;gap:8px;width:200px}.ds-est{flex:1;font-family:Archivo,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.04em;min-height:32px;background:#fff;color:#000;border:2px solid #000;border-radius:0;cursor:pointer}.ds-est[data-v=SI]{background:#000;color:#fff}.ds-est:focus-visible{outline:2px solid #000;outline-offset:2px}"
+    },
+    {
+      "name": "Obra con avance",
+      "kind": "card",
+      "refersTo": "obra-item-actual",
+      "description": "Ítem del panel Obras; la actual se invierte, con su barra de avance.",
+      "html": "<div class=\"ds-obras\"><div class=\"ds-obra ds-actual\"><div class=\"ds-top\"><b>Edificio Norte</b><strong>62%</strong></div><span class=\"ds-meta\">31 de 50 tareas</span><div class=\"ds-barra\"><i style=\"width:62%\"></i></div></div><div class=\"ds-obra\"><div class=\"ds-top\"><b>Casa Ruiz</b><strong>18%</strong></div><span class=\"ds-meta\">4 de 22 tareas</span><div class=\"ds-barra\"><i style=\"width:18%\"></i></div></div></div>",
+      "css": ".ds-obras{display:grid;gap:8px;width:280px;font-family:Archivo,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif}.ds-obra{display:grid;gap:8px;padding:12px;border:2px solid #000;background:#fff;color:#000;cursor:pointer}.ds-obra:focus-visible{outline:2px solid #000;outline-offset:2px}.ds-top{display:flex;justify-content:space-between;align-items:baseline}.ds-top b{font-size:15px}.ds-top strong{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}.ds-meta{font-size:12px;color:#444}.ds-barra{height:12px;border:2px solid #000;background:#fff}.ds-barra i{display:block;height:100%;background:#000}.ds-actual{background:#000;color:#fff}.ds-actual .ds-meta{color:#dcdcdc}.ds-actual .ds-barra{border-color:#fff;background:#000}.ds-actual .ds-barra i{background:#fff}"
+    }
+  ],
+  "narrative": {
+    "northStar": "La planilla de obra",
+    "overview": "La app se lee como una planilla en papel que se lleva a la obra: negro sobre blanco, todo a la vista, sin adornos. Cada caja tiene un borde firme de 2px y cada esquina es recta. La jerarquía sale del peso de la letra (Archivo 800 frente a 600 y 400) y de la inversión negro/blanco, no del color, la sombra ni el volumen.\n\nLa densidad es de herramienta de trabajo. En la compu, una tabla ancha con columnas fijas que se escanea como una hoja de Excel. En el celular, la misma fila se vuelve una tarjeta con borde, con campos de 16px y blancos de toque de 44px. Los controles son sobrios y precisos: hacen una sola cosa, se ven igual en todas las pantallas y muestran su estado invirtiéndose a negro.\n\nLo que no va: neumorfismo, sombras difusas, esquinas redondeadas, degradés y el branding de otros proyectos (constructora-demo, Teskel).",
+    "keyCharacteristics": [
+      "Monocromo puro (#000 / #fff) con cuatro grises funcionales.",
+      "Bordes de 2px negros en todo contenedor y control; radio 0 en todos lados.",
+      "Estado activo = invertido (fondo negro, texto blanco).",
+      "Una sola familia: Archivo 400/500/600/800, con números tabulares en los contadores.",
+      "Encabezado negro de borde a borde con el logo 3dF."
+    ],
+    "rules": [
+      {
+        "name": "La regla de la tinta única",
+        "body": "La interfaz usa negro, blanco y grises. Un color nuevo solo entra si representa un dato, y pasa primero por DESIGN.md.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla del 4,5",
+        "body": "Todo gris que se use como texto tiene que dar al menos 4,5:1 sobre el fondo donde aparece, incluido el gris renglón de las filas pares. Gris trazo (gris-2) es solo para bordes y para texto sobre negro.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla del invertido",
+        "body": "Seleccionado, activo, actual o hecho se marca invirtiendo a fondo negro con texto blanco. No hay un color de acento para eso.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla del peso",
+        "body": "La jerarquía se arma con peso y tamaño: 800 para lo que se cuenta o se nombra, 600 para lo que se toca, 400 para lo que se lee.",
+        "section": "typography"
+      },
+      {
+        "name": "La regla de los 16px",
+        "body": "En celular, todo campo editable va en 16px como mínimo.",
+        "section": "typography"
+      },
+      {
+        "name": "La regla del papel plano",
+        "body": "Nada flota. Si algo tiene que destacarse, se invierte o se le engrosa el borde; no se le pone sombra.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** usar solo los tokens de negro, blanco y grises en la interfaz. Los marcadores rojo y amarillo quedan dentro del editor de fotos.",
+      "**Do** cerrar cada control y contenedor con un borde negro de 2px y radio 0.",
+      "**Do** marcar lo activo o elegido invirtiendo a negro con texto blanco.",
+      "**Do** usar Archivo 800 con `tabular-nums` para toda cifra que se compare (totales, %, avance por obra o piso).",
+      "**Do** subir los campos a 16px y los blancos de toque a 44px por debajo de 820px. En el celular, la regla tiene que ser al menos tan específica como la de compu que pisa.",
+      "**Do** mantener el contorno de foco de 2px con separación de 2px, blanco dentro del encabezado."
+    ],
+    "donts": [
+      "**Don't** usar neumorfismo, sombras difusas, esquinas redondeadas ni degradés.",
+      "**Don't** usar el branding, los colores ni la tipografía de constructora-demo o Teskel.",
+      "**Don't** agregar un color de acento para estados; el invertido es el acento.",
+      "**Don't** reemplazar Archivo ni sumar una segunda familia tipográfica.",
+      "**Don't** usar `box-shadow` salvo la barra interna de 4px que marca lo importante."
+    ]
+  }
+}
