@@ -3658,7 +3658,8 @@ td.c-estado{padding-left:2px;padding-right:2px}
   document.getElementById('nube-login').addEventListener('click', function(){
     if (!GOOGLE_CLIENT_ID) return abrirNube();
     mensajeNube('Abriendo la ventana de Google…');
-    pedirToken('select_account').then(function(){ return sincronizarAhora(true); })
+    // Con la sesión iniciada el panel se cierra solo; el avance de la sincronización se ve en el encabezado.
+    pedirToken('select_account').then(function(){ cerrarNube(); return sincronizarAhora(true); })
       .catch(function(e){ mensajeNube(e.message || 'No se pudo iniciar sesión con Google.'); });
   });
   document.getElementById('nube-sync').addEventListener('click', function(){ sincronizarAhora(true); });
