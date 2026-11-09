@@ -1,5 +1,5 @@
 ---
-name: 3dF Checklist
+name: 3dF Obras
 description: Checklist de tareas de obra de 3dF Desarrollos, en negro y blanco, con sincronización a Google Drive.
 colors:
   negro: "#000000"
@@ -140,7 +140,7 @@ components:
     padding: "12px"
 ---
 
-# Design System: 3dF Checklist
+# Design System: 3dF Obras
 
 ## Overview
 
@@ -300,3 +300,10 @@ Componente propio del sistema: un botón que ocupa todo el ancho de la celda y a
 - **Don't** agregar un color de acento para estados; el invertido es el acento.
 - **Don't** reemplazar Archivo ni sumar una segunda familia tipográfica.
 - **Don't** usar `box-shadow` salvo la barra interna de 4px que marca lo importante.
+
+## Dashboard (gerencia)
+- Orden de lectura: filtros (obra, piso, rubro, contratista) → cinco indicadores → estado por obra → completadas por semana y contratistas con más vencidas → detalle de tareas → pie con fecha de los datos y filtros aplicados.
+- Indicadores y tarjetas de obra son botones (`aria-pressed`): filtran todo el tablero. El activo se invierte (negro con texto blanco); la obra activa lleva un contorno de 4px.
+- Semáforo sin color: **■ Atrasada** (relleno negro), **▲ Atención** (gris claro con borde negro) y **● En término** (blanco con borde gris). Siempre con texto, nunca solo color o forma.
+- Gráficos hechos con CSS (barras), sin librerías, para que funcionen sin conexión. Cifras de indicadores en 28–32px, barras de 14px con borde de 2px.
+- Impresión: solo el tablero, sin controles; barras y encabezados de tabla conservan el negro (`print-color-adjust:exact`). El HTML exportado es el mismo tablero interactivo con los datos del mes embebidos.

@@ -22,15 +22,15 @@ Checklist de tareas de obra para 3dF Desarrollos: varias obras, una planilla por
 
 ## Positioning
 
-Los datos son del ingeniero y viven en su Drive como un Excel común (`checklist.xlsx` por obra), no en una base propietaria. La app y el Excel se sincronizan en las dos direcciones, y hay versiones separadas (Oficial vs. Versiones importadas por empleado) para no pisar la copia oficial.
+Los datos son del ingeniero y viven en su Drive como un Excel común (`{obra}.xlsx`, uno por obra), no en una base propietaria. La app y el Excel se sincronizan en las dos direcciones, y hay versiones separadas (Oficial vs. Versiones importadas por empleado) para no pisar la copia oficial.
 
 ## Operating Context
 
-- Estructura en Drive: `3dF Checklist/Oficial/Planillas/{obra}/checklist.xlsx` + `fotos/{piso}/{tarea}/`, `Versiones/{empleado}_{fecha}/…`, `Dashboard Mensual/`.
+- Estructura en Drive: `3dF Obras/Oficial/Planillas/{obra}/{obra}.xlsx` + `fotos/{piso}/{tarea}/`, `Versiones/{empleado}_{fecha}/…`, `Dashboard Mensual/`.
 - Indicador "Viendo: Oficial" / versión importada: define a dónde escribe la sincronización.
 - Sincroniza al iniciar sesión, con "Sincronizar ahora", al volver a la app y ~2 s después de cada cambio. Conflicto app vs. Excel: se pregunta y se resuelve por archivo entero.
 - Exportar PDF/CSV (pestaña visible con filtros), Excel (todas las pestañas visibles), ZIP "Exportar / Importar información" para pasar datos entre empleados. Compartir por WhatsApp.
-- Dashboard mensual por obra, piso y unidad. Aviso de tareas que vencen mañana.
+- Dashboard para gerencia: cinco indicadores (% ejecutado, vencidas, vencen en 7 días, completadas en el mes, obras atrasadas), estado por obra con semáforo, completadas por semana, ranking de contratistas con más vencidas y detalle de tareas. Filtra por obra, piso, rubro y contratista; tocar un indicador, obra o contratista filtra todo. Imprime / guarda PDF y se descarga como HTML interactivo. Criterio de semáforo interno (no es una norma): atrasada = 20 % o más de las pendientes vencidas; atención = alguna vencida o con plazo en 7 días. Aviso de tareas que vencen mañana.
 - Escritorio: tabla. Celular: tarjetas.
 
 ## Capabilities and Constraints
@@ -46,7 +46,7 @@ Los datos son del ingeniero y viven en su Drive como un Excel común (`checklist
 
 ## Brand Commitments
 
-- Nombre: **3dF Desarrollos**, app "3dF Checklist" ("CHECKLIST TAREAS" en el encabezado).
+- Nombre: **3dF Desarrollos**, app "3dF Obras" (el encabezado todavía dice "CHECKLIST TAREAS": pendiente de renombrar).
 - Logo 3dF (`logo.png`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`).
 - Tipografía Archivo, negro y blanco. Sin neumorfismo.
 - No copiar branding de otros proyectos (constructora-demo ni Teskel). Mejoras probadas en constructora-demo se pueden portar, pero con identidad 3dF.
