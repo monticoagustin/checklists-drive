@@ -5,7 +5,8 @@
 - Identidad 3dF: Archivo, negro/blanco, logo 3dF, sin neumorfismo. No copiar branding de otros proyectos.
 - Google Drive: scope `drive.file`. Client ID de 3dF (proyecto de Google Cloud 998929723356); orígenes autorizados: https://teskel.online, localhost:8765 y monticof-commits.github.io. No cambiar el Client ID sin avisar.
 - Rutas relativas, sin service worker: funciona bajo cualquier subpath.
-- GitHub es la única copia del código: no hay carpeta local. Clonar el repo, cambiar, commitear y hacer `git push` a `main` son libres (GitHub = guardar).
-- Publicar en vivo (actualizar `3df/index.html` en el Space de Teskel `spc_02ae51f4db5a45b3a6c013388fe16504`) SOLO cuando el usuario lo pida.
-- Antes de publicar, el `3df/index.html` del Space tiene que ser igual al `index.html` de un commit que ya esté en GitHub.
+- GitHub es la única copia del código: no hay carpeta local.
+- **Push a `main` = publicar en vivo.** La action `.github/workflows/publicar-en-teskel.yml` copia `index.html`, `manifest.webmanifest` y los `.png` a `3df/` del Space de Teskel (`spc_02ae51f4db5a45b3a6c013388fe16504`) y Spacefast publica solo. Usa el secreto `SPACEFAST_TOKEN` del repo. También se puede correr a mano desde Actions.
+- El trabajo va en ramas (`git push` a ramas es libre: es guardar). A `main` solo se mergea cuando el usuario pide publicar.
+- No editar `3df/` en el Space a mano: lo pisa la próxima ejecución de la action.
 - Diseño: PRODUCT.md y DESIGN.md (+ `.impeccable/design.json`) son la referencia; actualizarlos si cambia el sistema.

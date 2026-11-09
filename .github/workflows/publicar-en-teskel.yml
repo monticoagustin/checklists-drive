@@ -1,0 +1,93 @@
+name: Publicar en teskel.online/3df
+
+# En cada push a main, copia la app a la carpeta 3df/ del repo del Space
+# "teskel" en Spacefast. Spacefast publica teskel solo.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: publicar-en-teskel
+  cancel-in-progress: false
+
+env:
+  TESKEL_SPACE_ID: spc_02ae51f4db5a45b3a6c013388fe16504
+  CARPETA_DESTINO: 3df
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Traer el repo checklists-drive
+        uses: actions/checkout@v4
+        with:
+          path: app-src
+
+      - name: Validar la app antes de publicar
+        working-directory: app-src
+        run: |
+          set -e
+          for f in index.html manifest.webmanifest logo.png icon-192.png icon-512.png apple-touch-icon.png; do
+            [ -f "$f" ] || { echo "::error::Falta $f"; exit 1; }
+          done
+          # Regla del proyecto: sin service worker, para que ande bajo cualquier subpath.
+          if grep -q "serviceWorker.register" index.html; then
+            echo "::error::index.html registra un service worker; la app no debe usarlo."; exit 1
+          fi
+          python3 -c "import json; json.load(open('manifest.webmanifest'))"
+          echo "OK: app lista para publicar"
+
+      - name: Pedir un remoto de push temporal para teskel
+        env:
+          SPACEFAST_TOKEN: ${{ secrets.SPACEFAST_TOKEN }}
+        run: |
+          if [ -z "$SPACEFAST_TOKEN" ]; then
+            echo "::error::Falta el secreto SPACEFAST_TOKEN en Settings → Secrets → Actions."; exit 1
+          fi
+          respuesta=$(curl -sS -w '\n%{http_code}' -X POST \
+            "https://api.spacefast.com/v1/spaces/${TESKEL_SPACE_ID}/source/push-remote" \
+            -H "Authorization: Bearer ${SPACEFAST_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{"ttlSeconds": 900}')
+          codigo=$(echo "$respuesta" | tail -n1)
+          cuerpo=$(echo "$respuesta" | sed '$d')
+          if [ "$codigo" -ge 300 ]; then
+            echo "::error::Spacefast respondió $codigo al pedir el remoto: $(echo "$cuerpo" | jq -r '.code // .title // .')"
+            exit 1
+          fi
+          url=$(echo "$cuerpo" | jq -r '[.. | objects | .pushUrl? // empty][0]')
+          if [ -z "$url" ] || [ "$url" = "null" ]; then
+            echo "::error::La respuesta de Spacefast no trae pushUrl."; exit 1
+          fi
+          echo "::add-mask::$url"
+          echo "TESKEL_REMOTE=$url" >> "$GITHUB_ENV"
+
+      - name: Clonar teskel
+        run: git clone --quiet --depth 1 --branch main "$TESKEL_REMOTE" teskel
+
+      - name: Copiar la app a teskel/3df
+        run: |
+          mkdir -p "teskel/${CARPETA_DESTINO}"
+          # Solo los archivos que sirve la app; los docs del repo no se publican.
+          rsync -a --delete \
+            --include 'index.html' --include 'manifest.webmanifest' --include '*.png' \
+            --exclude '*' \
+            app-src/ "teskel/${CARPETA_DESTINO}/"
+
+      - name: Commit y push a teskel
+        working-directory: teskel
+        env:
+          MENSAJE_ORIGEN: ${{ github.event.head_commit.message }}
+        run: |
+          git add -A "${CARPETA_DESTINO}"
+          if git diff --cached --quiet; then
+            echo "Sin cambios en ${CARPETA_DESTINO}/; no hay nada que publicar."; exit 0
+          fi
+          git -c user.name="checklists-drive (GitHub Actions)" \
+              -c user.email="actions@users.noreply.github.com" \
+              commit -q -m "3df: sincronizar desde monticoagustin/checklists-drive@${GITHUB_SHA::7}" \
+                        -m "${MENSAJE_ORIGEN:-Ejecución manual}"
+          git push --quiet origin HEAD:main
+          echo "Publicado: https://teskel.online/${CARPETA_DESTINO}/"
