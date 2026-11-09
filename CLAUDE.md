@@ -3,6 +3,9 @@
 - Destino: https://teskel.online/3df/ (Space Teskel, path `3df/`). Pages original: https://monticof-commits.github.io/Checklists-Drive/
 - Siempre debe cumplir las normas ISO. No agregar nada que las rompa; no inventar normas.
 - Identidad 3dF: Archivo, negro/blanco, logo 3dF, sin neumorfismo. No copiar branding de otros proyectos.
-- Google Drive: el Client ID actual es de otro proyecto de Google Cloud y solo acepta localhost:8765 y monticof-commits.github.io. Para que ande en teskel.online hay que agregar `https://teskel.online` como origen autorizado (ver SETUP-GOOGLE.md) o usar un Client ID propio.
+- Google Drive: scope `drive.file`. Client ID de 3dF (proyecto de Google Cloud 998929723356); orígenes autorizados: https://teskel.online, localhost:8765 y monticof-commits.github.io. No cambiar el Client ID sin avisar.
 - Rutas relativas, sin service worker: funciona bajo cualquier subpath.
-- Git: commits locales libres; `git push` SOLO cuando el usuario lo pida.
+- GitHub es la única copia del código: no hay carpeta local. Clonar el repo, cambiar, commitear y hacer `git push` a `main` son libres (GitHub = guardar).
+- Publicar en vivo (actualizar `3df/index.html` en el Space de Teskel `spc_02ae51f4db5a45b3a6c013388fe16504`) SOLO cuando el usuario lo pida.
+- Antes de publicar, el `3df/index.html` del Space tiene que ser igual al `index.html` de un commit que ya esté en GitHub.
+- Diseño: PRODUCT.md y DESIGN.md (+ `.impeccable/design.json`) son la referencia; actualizarlos si cambia el sistema.
