@@ -452,7 +452,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
   </div>
   <div class="header-sync" role="group" aria-label="Cuenta, Drive y dashboard">
     <button class="btn" id="cuenta-nube" type="button" aria-label="Cuenta y sincronización"><span id="cuenta-etiqueta">Cuenta / sincronización</span><span id="cuenta-email" hidden></span></button>
-    <button class="btn" id="abrir-drive" type="button" aria-label="Abrir Google Drive">Google Drive</button>
+    <button class="btn" id="abrir-drive" type="button" aria-label="Abrir la carpeta 3dF Checklist en Google Drive">Google Drive</button>
     <button class="btn" id="dashboard-open" type="button">Dashboard</button>
     <span id="estado-nube" aria-live="polite">Solo en este dispositivo</span>
   </div>
@@ -1970,7 +1970,8 @@ td.c-estado{padding-left:2px;padding-right:2px}
       estadoNube('No hay nadie logueado');
       return;
     }
-    var id = carpetaVisibleId();
+    // Abre la raíz "3dF Checklist" (donde están Oficial y Versiones), no la carpeta de la versión en pantalla.
+    var id = driveIds.folder;
     if (id) window.open('https://drive.google.com/drive/folders/' + id, '_blank', 'noopener');
     else window.open('https://drive.google.com/drive/my-drive', '_blank', 'noopener');
   });
