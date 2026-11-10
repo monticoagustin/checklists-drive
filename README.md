@@ -24,7 +24,7 @@ Mi unidad/
 ```
 **Oficial** es la versión oficial. Si la pantalla dice `Viendo: Oficial`, la sincronización escribe solo en `Oficial/Planillas/{obra}/`.
 
-**Versiones** es hermana de Oficial (no vive adentro de Planillas). **Importar información** crea `Versiones/{empleado}_{YYYY-MM-DD-HHMM}/` y deja esa carpeta como versión activa: la sync siguiente sube ahí y no pisa Oficial. **Versión oficial** vuelve el puntero a Oficial y recarga esa copia; no borra ninguna carpeta de Versiones.
+**Versiones** es hermana de Oficial (no vive adentro de Planillas). **Borrar versión** (aparece al estar viendo una versión importada) la quita de la app y del dispositivo y manda su carpeta `Versiones/{id}` a la papelera de Drive (recuperable desde ahí). Sin sesión de Google la quita solo del dispositivo. Oficial no se puede borrar. **Importar información** crea `Versiones/{empleado}_{YYYY-MM-DD-HHMM}/` y deja esa carpeta como versión activa: la sync siguiente sube ahí y no pisa Oficial. **Versión oficial** vuelve el puntero a Oficial y recarga esa copia; no borra ninguna carpeta de Versiones.
 
 **Nombres anteriores:** si el Drive tiene la carpeta `3dF Checklist`, la primera sincronización la renombra a `3dF Obras` (mismo id, no se copia nada) y cada `checklist.xlsx` pasa a `{obra}.xlsx`. El botón **Google Drive** del encabezado abre esa carpeta raíz.
 

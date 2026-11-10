@@ -506,6 +506,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
       <p id="version-badge" class="version-badge" aria-live="polite">Viendo: Oficial</p>
       <select id="version-selector" aria-label="Elegir versión"></select>
       <button class="btn" id="version-oficial" type="button" hidden>Versión oficial</button>
+      <button class="btn" id="version-quitar" type="button" hidden>Borrar versión</button>
     </div>
   </div>
   <div class="header-sync" role="group" aria-label="Cuenta, Drive y dashboard">
@@ -3145,6 +3146,8 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     var id = versionActivaId();
     if (badge) badge.textContent = textoBadge();
     if (btn) btn.hidden = id === VERSION_OFICIAL;
+    var quitar = document.getElementById('version-quitar');
+    if (quitar) quitar.hidden = id === VERSION_OFICIAL;
     if (!sel) return;
     var obraSlug = slugNombre(obraActiva());
     var vistos = {};
@@ -3576,6 +3579,84 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
       pintarVersion();
       estadoNube('No se pudo cambiar de versión');
       alert((e && e.message) || 'No se pudo cambiar de versión.');
+    });
+  });
+  // Borrar una versión importada: va a la papelera de Drive la carpeta 3dF Obras/Versiones/{id}
+  // (recuperable desde la papelera de Drive unos 30 días) y se quita de este dispositivo. Oficial no se puede borrar.
+  function papeleraCarpetaVersion(id){
+    return asegurarCarpetas().then(function(){
+      if (!driveIds.versiones) return false;
+      // Solo una carpeta con ese nombre exacto y dentro de Versiones: nunca Oficial ni otra cosa.
+      return buscarArchivo(id, driveIds.versiones, FOLDER_MIME).then(function(f){
+        if (!f) return false;
+        return papeleraDrive(f.id).then(function(){
+          if (driveIds.versionFolders) delete driveIds.versionFolders[id];
+          lsSet(LS.ids, driveIds);
+          return true;
+        });
+      });
+    });
+  }
+  function fotosDeDoc(doc, acc){
+    ((doc && doc.tabs) || []).forEach(function(t){
+      (t.rows || []).forEach(function(r){ (r.fotos || []).forEach(function(f){ acc[f] = 1; }); });
+    });
+    return acc;
+  }
+  function quitarVersion(id, opts){
+    opts = opts || {};
+    if (!id || id === VERSION_OFICIAL) return Promise.resolve(false);
+    var enDrive = false;
+    return activarVersion(VERSION_OFICIAL).then(function(){
+      // Primero Drive: si falla, no se borra nada local.
+      if (!opts.drive) return;
+      return papeleraCarpetaVersion(id).then(function(ok){ enDrive = ok; });
+    }).then(function(){
+      var cache = lsGet(LS.cacheVer, {}) || {};
+      var obras = lsGet(LS.obraVer, {}) || {};
+      // Fotos que solo usa esta versión: se borran del dispositivo; las que comparte con otra se quedan.
+      var propias = {}, otras = {};
+      fotosDeDoc(cache[id], propias);
+      Object.keys(obras).forEach(function(k){ if (k.indexOf(id + '|') === 0) fotosDeDoc(obras[k], propias); });
+      Object.keys(cache).forEach(function(k){ if (k !== id) fotosDeDoc(cache[k], otras); });
+      Object.keys(obras).forEach(function(k){ if (k.indexOf(id + '|') !== 0) fotosDeDoc(obras[k], otras); });
+      fotosDeDoc(state, otras);
+      delete cache[id];
+      Object.keys(obras).forEach(function(k){ if (k.indexOf(id + '|') === 0) delete obras[k]; });
+      lsSet(LS.cacheVer, cache);
+      lsSet(LS.obraVer, obras);
+      var syncAll = lsGet(LS.syncVer, {}) || {}; delete syncAll[id]; lsSet(LS.syncVer, syncAll);
+      var fotosAll = lsGet(LS.fotosVer, {}) || {}; delete fotosAll[id]; lsSet(LS.fotosVer, fotosAll);
+      guardarCatalogo(catalogoVersiones().filter(function(v){ return v && v.id !== id; }));
+      Object.keys(propias).forEach(function(f){ if (!otras[f]) quitarFotoDB(f); });
+      pintarVersion();
+      return { ok:true, enDrive:enDrive };
+    });
+  }
+  var btnQuitarVersion = document.getElementById('version-quitar');
+  if (btnQuitarVersion) btnQuitarVersion.addEventListener('click', function(){
+    var id = versionActivaId();
+    if (id === VERSION_OFICIAL) return;
+    var nombre = textoBadge().replace(/^Viendo:\s*Versión\s*·\s*/, '');
+    var snap = (lsGet(LS.cacheVer, {}) || {})[id];
+    var sinSubir = !!(snap && snap.dirty) || (Number(lastLocalChange) || 0) > (Number(lastCloudSync) || 0);
+    var conDrive = tokenValido() && navigator.onLine && !!GOOGLE_CLIENT_ID;
+    var aviso = sinSubir ? '\n\nAtención: esta versión tiene cambios sin subir a Drive y se van a perder.' : '';
+    var msg = conDrive
+      ? '¿Borrar la versión "' + nombre + '"?\n\n'
+        + 'Se quita de esta app y la carpeta 3dF Obras/Versiones/' + id + ' va a la papelera de Google Drive '
+        + '(se puede recuperar desde ahí unos 30 días). La versión Oficial no se toca.' + aviso
+      : '¿Quitar la versión "' + nombre + '" solo de este dispositivo?\n\n'
+        + 'No hay sesión de Google, así que la carpeta en Drive (3dF Obras/Versiones/' + id + ') queda. '
+        + 'Para borrarla también, cancelá e iniciá sesión.' + aviso;
+    if (!confirm(msg)) return;
+    quitarVersion(id, { drive: conDrive }).then(function(r){
+      if (!r) return;
+      estadoNube(r.enDrive ? 'Versión borrada (carpeta en la papelera de Drive)' : 'Versión quitada de este dispositivo');
+    }).catch(function(e){
+      pintarVersion();
+      estadoNube('No se pudo borrar la versión');
+      alert((e && e.message) || 'No se pudo borrar la versión. No se borró nada de este dispositivo.');
     });
   });
   pintarVersion();
@@ -4096,7 +4177,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
         armarPDF:armarPDF, planFotos:planFotos,
         mananaISO:mananaISO,
         filasMes:filasMes, dashboardApp:dashboardApp, exportarDashboardHTML:exportarDashboardHTML,
-        asegurarCarpetas:asegurarCarpetas, archivoRemoto:archivoRemoto,
+        asegurarCarpetas:asegurarCarpetas, archivoRemoto:archivoRemoto, quitarVersion:quitarVersion, activarVersion:activarVersion,
         aplicarRemoto:aplicarRemoto, subirFotos:subirFotos,
         testToken:function(token,email){accessToken=token;tokenExp=Date.now()+3600000;cloudUser={email:email};driveIds.email=email;},
         leerExcel: leerExcel,
