@@ -193,7 +193,7 @@ Monocromo estricto: el negro y el blanco hacen todo el trabajo y los grises solo
 
 ### Hierarchy
 - **Display** (800, 40px, 1): cifras del resumen (total, hechas, pendientes); tabulares. En el dashboard, las cifras de las tarjetas van en 28px.
-- **Headline** (800, 26px; 22px en celular): "CHECKLIST TAREAS" en el encabezado, en mayúsculas.
+- **Headline** (800, 26px; 22px en celular): "OBRAS" en el encabezado, en mayúsculas.
 - **Title** (800, 16px): títulos de paneles ("Obras", avisos). Los modales usan 23px.
 - **Body** (400, 15px, 1.35): texto base. Las celdas de la tabla van en 13px y suben a 16px en celular para evitar el zoom de iOS.
 - **Control** (600, 13px; 12px dentro de grupos y en el encabezado): botones, pestañas, selects.
@@ -304,6 +304,6 @@ Componente propio del sistema: un botón que ocupa todo el ancho de la celda y a
 ## Dashboard (gerencia)
 - Orden de lectura: filtros (obra, piso, rubro, contratista) → cinco indicadores → estado por obra → completadas por semana y contratistas con más vencidas → detalle de tareas → pie con fecha de los datos y filtros aplicados.
 - Indicadores y tarjetas de obra son botones (`aria-pressed`): filtran todo el tablero. El activo se invierte (negro con texto blanco); la obra activa lleva un contorno de 4px.
-- Semáforo sin color: **■ Atrasada** (relleno negro), **▲ Atención** (gris claro con borde negro) y **● En término** (blanco con borde gris). Siempre con texto, nunca solo color o forma.
+- Sin semáforo ni umbrales propios: las obras se ordenan por tareas vencidas y muestran barra de avance con cifras.
 - Gráficos hechos con CSS (barras), sin librerías, para que funcionen sin conexión. Cifras de indicadores en 28–32px, barras de 14px con borde de 2px.
 - Impresión: solo el tablero, sin controles; barras y encabezados de tabla conservan el negro (`print-color-adjust:exact`). El HTML exportado es el mismo tablero interactivo con los datos del mes embebidos.

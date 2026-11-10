@@ -360,10 +360,6 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
 .d-obra[aria-pressed=true]{outline:4px solid var(--negro,#000);outline-offset:2px}
 .d-obra-t{font-weight:800;font-size:15px;overflow-wrap:anywhere}
 .d-obra-d{font-size:12px}
-.d-estado{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.03em;padding:2px 8px;border:2px solid var(--negro,#000);width:fit-content;text-transform:uppercase}
-.d-estado.atr{background:var(--negro,#000);color:var(--blanco,#fff)}
-.d-estado.att{background:var(--gris-2,#dcdcdc)}
-.d-estado.ok{background:var(--blanco,#fff);border-color:var(--gris-3,#6b6b6b);color:var(--gris-4,#444)}
 .d-barra{display:block;height:14px;border:2px solid var(--negro,#000);background:var(--blanco,#fff);overflow:hidden}
 .d-barra i{display:block;height:100%;background:var(--negro,#000)}
 .d-semanas{list-style:none;margin:0;padding:0;display:flex;gap:10px;align-items:flex-end}
@@ -392,8 +388,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
 @media print{
   .d-root{gap:10px}
   .d-obra,.d-sec,.d-kpi,.d-tabla tr{break-inside:avoid}
-  .d-estado.atr,.d-barra i,.d-sem-col i,.d-tabla th,.d-kpi[aria-pressed=true]{print-color-adjust:exact;-webkit-print-color-adjust:exact}
-}
+  }
 </style>
 <style>
 .nube-modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:18px}
@@ -505,7 +500,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
 <header>
   <img class="logo" src="logo.png" alt="3dF Desarrollos">
   <div class="titulo">
-    <h1>CHECKLIST TAREAS</h1>
+    <h1>OBRAS</h1>
     <div class="obra"><label for="obra">Obra:</label><input id="obra" data-meta="obra" autocomplete="off"><button class="btn" id="agregar-obra" type="button">+ Nueva obra</button></div>
     <div class="version-bar">
       <p id="version-badge" class="version-badge" aria-live="polite">Viendo: Oficial</p>
@@ -1656,7 +1651,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
         c.value = valor; c.font = fuente; c.alignment = alin; c.fill = relleno(NEGRO);
       }
       var izq = { vertical:'middle', horizontal:'left', indent:1 }, der = { vertical:'middle', horizontal:'right' };
-      texto('B1:G1', 'CHECKLIST TAREAS', { name:'Arial', size:18, bold:true, color:BLANCO }, izq);
+      texto('B1:G1', 'OBRAS', { name:'Arial', size:18, bold:true, color:BLANCO }, izq);
       texto('B2:G2', 'OBRA: ' + obraDe(tab) + '  -  ' + tab.nombre, { name:'Arial', size:11, color:BLANCO }, izq);
       texto('B3:G3', '3dF Desarrollos', { name:'Arial', size:9, color:{ argb:'FFCCCCCC' } }, izq);
       texto('H1:J1', String(state.meta.codigo || ''), { name:'Arial', size:9, bold:true, color:BLANCO }, der);
@@ -1795,7 +1790,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     }
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica','bold'); doc.setFontSize(15);
-    doc.text('CHECKLIST TAREAS', x, 14);
+    doc.text('OBRAS', x, 14);
     doc.setFont('helvetica','normal'); doc.setFontSize(9);
     doc.text('Obra: ' + obraActiva() + '  ·  Pestaña: ' + tabActiva().nombre, x, 22);
     doc.setFontSize(8);
@@ -3853,14 +3848,6 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
       s.pend=s.total-s.hechas;s.pct=s.total?Math.round(s.hechas*100/s.total):0;
       return s;
     }
-    // Criterio interno de la app (no es una norma): atrasada = 20 % o más de las pendientes con plazo vencido;
-    // atención = alguna vencida o con plazo en los próximos 7 días; en término = el resto.
-    function semaforo(s){
-      if(!s.pend)return 'ok';
-      if(s.venc/s.pend>=0.2)return 'atr';
-      return (s.venc>0||s.sem>0)?'att':'ok';
-    }
-    var ETQ={atr:'■ Atrasada',att:'▲ Atención',ok:'● En término'};
     function agrupar(lista,k){var g={};lista.forEach(function(r){var v=dato(r,k);(g[v]=g[v]||[]).push(r);});return g;}
     function estadoTexto(r,ref){
       var c=clasif(r,ref);
@@ -3902,15 +3889,13 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
       }).join('')+'</ul>'+(arr.length>8?'<p class="d-nota">Se muestran los 8 con más vencidas de '+arr.length+'.</p>':'');
     }
     function obrasHtml(lista,ref){
-      var g=agrupar(lista,'obra'), arr=Object.keys(g).map(function(k){var s=stats(g[k],ref);return {k:k,s:s,e:semaforo(s)};});
-      var orden={atr:0,att:1,ok:2};
-      arr.sort(function(x,y){return orden[x.e]-orden[y.e]||x.s.pct-y.s.pct||x.k.localeCompare(y.k,'es');});
+      var g=agrupar(lista,'obra'), arr=Object.keys(g).map(function(k){var s=stats(g[k],ref);return {k:k,s:s};});
+      arr.sort(function(x,y){return y.s.venc-x.s.venc||x.s.pct-y.s.pct||x.k.localeCompare(y.k,'es');});
       if(!arr.length)return '<p class="d-vacio">Sin obras para mostrar.</p>';
       return '<div class="d-obras">'+arr.map(function(o){
         var on=estado.obra===o.k;
-        return '<button type="button" class="d-obra" data-key="f:obra:'+esc(o.k)+'" data-f="obra" data-v="'+esc(o.k)+'" aria-pressed="'+on+'" aria-label="Filtrar por obra '+esc(o.k)+': '+ETQ[o.e].slice(2)+', '+o.s.pct+'% ejecutado">'
+        return '<button type="button" class="d-obra" data-key="f:obra:'+esc(o.k)+'" data-f="obra" data-v="'+esc(o.k)+'" aria-pressed="'+on+'" aria-label="Filtrar por obra '+esc(o.k)+': '+o.s.pct+'% ejecutado, '+o.s.venc+' vencidas">'
           +'<span class="d-obra-t">'+esc(o.k)+'</span>'
-          +'<span class="d-estado '+o.e+'">'+ETQ[o.e]+'</span>'
           +'<span class="d-barra" role="img" aria-label="'+o.s.pct+'% ejecutado"><i style="width:'+o.s.pct+'%"></i></span>'
           +'<span class="d-obra-d"><b>'+o.s.pct+'%</b> · '+o.s.hechas+' de '+o.s.total+' ejecutadas · '+o.s.venc+' vencidas · '+o.s.sem+' vencen en 7 días</span></button>';
       }).join('')+'</div>';
@@ -3942,8 +3927,8 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     }
     function pintar(){
       var ref=refFecha(), todo=filtrar(rows,''), s=stats(todo,ref);
-      var porObra=agrupar(todo,'obra'), atrasadas=0, atencion=0;
-      Object.keys(porObra).forEach(function(k){var e=semaforo(stats(porObra[k],ref));if(e==='atr')atrasadas++;else if(e==='att')atencion++;});
+      var porObra=agrupar(todo,'obra'), nObras=0, conVenc=0;
+      Object.keys(porObra).forEach(function(k){nObras++;if(stats(porObra[k],ref).venc>0)conVenc++;});
       var sel=CAMPOS.map(function(c){
         var k=c[0], vals=Object.keys(agrupar(rows,k)).sort(function(a,b){return a.localeCompare(b,'es');});
         return '<label>'+c[1]+'<select data-key="s:'+k+'" data-sel="'+k+'"><option value="">'+c[2]+'</option>'+vals.map(function(v){return '<option value="'+esc(v)+'"'+(estado[k]===v?' selected':'')+'>'+esc(v)+'</option>';}).join('')+'</select></label>';
@@ -3962,10 +3947,10 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
           +kpiHtml('venc',s.venc,'Vencidas','plazo anterior a '+fechaAR(ref))
           +kpiHtml('sem',s.sem,'Vencen esta semana','próximos 7 días')
           +kpiHtml('comp',s.comp,'Completadas en el mes',esc(ctx.nombreMes||ctx.mes))
-          +kpiHtml('',atrasadas,'Obras atrasadas',atencion+(atencion===1?' obra en atención':' obras en atención'))
+          +kpiHtml('',nObras,nObras===1?'Obra':'Obras',conVenc+(conVenc===1?' con tareas vencidas':' con tareas vencidas'))
         +'</div>'
         +(s.total?
-          '<section class="d-sec" aria-labelledby="d-h-obras"><h3 id="d-h-obras">Estado por obra</h3><p class="d-nota">Tocá una obra para filtrar todo el tablero. Atrasada: 20 % o más de las pendientes vencidas. Atención: alguna vencida o con plazo en 7 días. Criterio interno de la app.</p>'+obrasHtml(filtrar(rows,'obra'),ref)+'</section>'
+          '<section class="d-sec" aria-labelledby="d-h-obras"><h3 id="d-h-obras">Estado por obra</h3><p class="d-nota">Tocá una obra para filtrar todo el tablero. Ordenadas por cantidad de tareas vencidas.</p>'+obrasHtml(filtrar(rows,'obra'),ref)+'</section>'
           +'<div class="d-dos">'
             +'<section class="d-sec" aria-labelledby="d-h-sem"><h3 id="d-h-sem">Completadas por semana</h3><p class="d-nota">Según la fecha de ejecución registrada.</p>'+semanasHtml(todo,ref)+'</section>'
             +'<section class="d-sec" aria-labelledby="d-h-rank"><h3 id="d-h-rank">Contratistas con más vencidas</h3><p class="d-nota">Tocá uno para ver sus tareas.</p>'+rankingHtml(filtrar(rows,'contratista'),ref)+'</section>'
