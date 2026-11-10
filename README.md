@@ -1,4 +1,4 @@
-# 3dF Checklist — prototipo con Google Drive
+# 3dF Obras — prototipo con Google Drive
 
 ## Qué es
 Es la app de checklist de obra (diseño blanco/negro, varias obras, tabla en compu y tarjetas en celular, fotos, exportar PDF / Excel / CSV y dashboard mensual). La sincronización **no usa Supabase**: cada ingeniero inicia sesión con **su propia cuenta de Google** y sus datos quedan en **su Google Drive** (15 GB gratis).
@@ -8,23 +8,25 @@ Se sigue editando todo **desde la app**, también en el celular y sin conexión.
 ## Cómo queda en Drive
 ```
 Mi unidad/
-└── 3dF Checklist/
+└── 3dF Obras/
     ├── Oficial/
     │   └── Planillas/
     │       └── {obra}/
-    │           ├── checklist.xlsx
+    │           ├── {obra}.xlsx
     │           └── fotos/{piso}/{tarea}/*.jpg
     ├── Versiones/
     │   └── {empleado}_{YYYY-MM-DD-HHMM}/
     │       └── Planillas/
     │           └── {obra}/
-    │               ├── checklist.xlsx
+    │               ├── {obra}.xlsx
     │               └── fotos/…
     └── Dashboard Mensual/
 ```
 **Oficial** es la versión oficial. Si la pantalla dice `Viendo: Oficial`, la sincronización escribe solo en `Oficial/Planillas/{obra}/`.
 
 **Versiones** es hermana de Oficial (no vive adentro de Planillas). **Importar información** crea `Versiones/{empleado}_{YYYY-MM-DD-HHMM}/` y deja esa carpeta como versión activa: la sync siguiente sube ahí y no pisa Oficial. **Versión oficial** vuelve el puntero a Oficial y recarga esa copia; no borra ninguna carpeta de Versiones.
+
+**Nombres anteriores:** si el Drive tiene la carpeta `3dF Checklist`, la primera sincronización la renombra a `3dF Obras` (mismo id, no se copia nada) y cada `checklist.xlsx` pasa a `{obra}.xlsx`. El botón **Google Drive** del encabezado abre esa carpeta raíz.
 
 Si el Drive todavía tiene el árbol viejo `3dF Checklist/Planillas/{obra}/` (sin `Oficial/`), la primera sincronización **mueve** esa carpeta a `Oficial/Planillas/` (el id no cambia y no se copia ni se vacía). Si `Oficial/Planillas` ya tiene archivos, el `Planillas` viejo se deja en la raíz sin borrarlo. Un Excel suelto (`3dF Checklist/checklist.xlsx` o `Oficial/Planillas/checklist.xlsx`) se parte por obra en la próxima sincronización **estando en Oficial** y después va a la papelera. La carpeta global `fotos/` también se mueve adentro de cada obra de Oficial y se tira; eso no corre mientras se está viendo una versión importada.
 

@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>3dF Checklist</title>
+<title>3dF Obras</title>
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="3dF Checklist">
+<meta name="apple-mobile-web-app-title" content="3dF Obras">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -331,15 +331,66 @@ td.c-estado{padding-left:2px;padding-right:2px}
 .dashboard-controls{display:flex;gap:14px;flex-wrap:wrap;clear:both;padding:12px 0}
 .dashboard-controls label{display:grid;gap:6px;font-size:13px;font-weight:700}
 .dashboard-controls input,.dashboard-controls select{background:var(--blanco);border:2px solid var(--negro);border-radius:0;padding:8px 10px;min-height:40px;max-width:100%}
-.dashboard-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:12px 0}
-.dashboard-card,.dashboard-breakdown{padding:14px;border:2px solid var(--negro);margin-bottom:14px;background:var(--blanco)}
-.dashboard-card b{font-size:28px;display:block}
-.dashboard-breakdown h3{margin:0 0 8px}
-.dashboard-bar{height:12px;border:2px solid var(--negro);background:var(--blanco);margin:6px 0 14px;overflow:hidden}
-.dashboard-bar i{height:100%;display:block;background:var(--negro)}
-.dashboard-group{font-size:13px;overflow-wrap:anywhere}
-.dashboard-group summary{cursor:pointer;min-height:40px;padding:8px 0}
-
+.dashboard-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+</style>
+<style id="dash-css">
+.d-root{display:grid;gap:16px;font-size:14px;color:var(--negro,#000)}
+.d-filtros{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+.d-filtros label{display:grid;gap:6px;font-size:13px;font-weight:700}
+.d-filtros select{background:var(--blanco,#fff);color:var(--negro,#000);border:2px solid var(--negro,#000);border-radius:0;padding:8px 10px;min-height:44px;max-width:100%;font:inherit;font-weight:400}
+.d-chips{display:flex;flex-wrap:wrap;gap:8px}
+.d-chip,.d-btn{font:inherit;font-weight:700;border:2px solid var(--negro,#000);background:var(--blanco,#fff);color:var(--negro,#000);padding:6px 12px;min-height:44px;cursor:pointer;border-radius:0}
+.d-chip:hover,.d-btn:hover{background:var(--negro,#000);color:var(--blanco,#fff)}
+.d-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.d-kpi{border:2px solid var(--negro,#000);padding:12px 14px;text-align:left;background:var(--blanco,#fff);color:var(--negro,#000);font:inherit;display:grid;gap:2px;border-radius:0}
+button.d-kpi{cursor:pointer}
+button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
+.d-kpi[aria-pressed=true]{background:var(--negro,#000);color:var(--blanco,#fff)}
+.d-kpi b{font-size:32px;line-height:1.1;font-weight:800;display:block}
+.d-kpi span{font-size:13px;font-weight:700}
+.d-kpi small{font-size:12px}
+.d-sec{border:2px solid var(--negro,#000);padding:14px;background:var(--blanco,#fff);min-width:0}
+.d-sec h3{margin:0 0 4px;font-size:16px;font-weight:800}
+.d-nota{margin:0 0 12px;font-size:12px;color:var(--gris-4,#444)}
+.d-vacio{margin:0;padding:8px 0;font-size:13px}
+.d-dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.d-obras{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.d-obra{border:2px solid var(--negro,#000);padding:12px;background:var(--blanco,#fff);color:var(--negro,#000);font:inherit;text-align:left;display:grid;gap:8px;cursor:pointer;border-radius:0;align-content:start}
+.d-obra:hover{background:var(--gris-1,#f3f3f3)}
+.d-obra[aria-pressed=true]{outline:4px solid var(--negro,#000);outline-offset:2px}
+.d-obra-t{font-weight:800;font-size:15px;overflow-wrap:anywhere}
+.d-obra-d{font-size:12px}
+.d-barra{display:block;height:14px;border:2px solid var(--negro,#000);background:var(--blanco,#fff);overflow:hidden}
+.d-barra i{display:block;height:100%;background:var(--negro,#000)}
+.d-semanas{list-style:none;margin:0;padding:0;display:flex;gap:10px;align-items:flex-end}
+.d-sem{flex:1;min-width:0;display:grid;gap:4px;justify-items:center}
+.d-sem-n{font-weight:800}
+.d-sem-col{display:flex;align-items:flex-end;width:100%;height:130px;border-bottom:2px solid var(--negro,#000)}
+.d-sem-col i{display:block;width:100%;background:var(--negro,#000);min-height:2px}
+.d-sem-et{font-size:12px}
+.d-rank{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.d-fila{display:grid;grid-template-columns:minmax(80px,1fr) minmax(60px,1fr) 28px;gap:10px;align-items:center;width:100%;min-height:44px;padding:4px 8px;border:2px solid transparent;background:var(--blanco,#fff);color:var(--negro,#000);font:inherit;text-align:left;cursor:pointer;border-radius:0}
+.d-fila:hover{background:var(--gris-1,#f3f3f3)}
+.d-fila[aria-pressed=true]{border-color:var(--negro,#000)}
+.d-fila-n{overflow-wrap:anywhere;font-weight:600}
+.d-fila b{text-align:right}
+.d-tabla-wrap{overflow-x:auto;border:2px solid var(--negro,#000)}
+.d-tabla{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}
+.d-tabla th{background:var(--negro,#000);color:var(--blanco,#fff);text-align:left;padding:8px;font-weight:700;white-space:nowrap}
+.d-tabla td{padding:8px;border-bottom:1px solid var(--gris-2,#dcdcdc);vertical-align:top}
+.d-tabla tr.venc td{font-weight:700;background:var(--gris-1,#f3f3f3)}
+.d-pie{margin:0;font-size:12px;color:var(--gris-4,#444)}
+@media (max-width:640px){
+  .d-filtros label{width:100%}
+  .d-filtros select{width:100%}
+  .d-kpi b{font-size:28px}
+}
+@media print{
+  .d-root{gap:10px}
+  .d-obra,.d-sec,.d-kpi,.d-tabla tr{break-inside:avoid}
+  }
+</style>
+<style>
 .nube-modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:18px}
 .nube-modal[hidden]{display:none}
 .nube-panel{position:relative;width:min(100%,460px);max-height:calc(100dvh - 36px);overflow-y:auto;background:var(--blanco);color:var(--negro);padding:26px;border:2px solid var(--negro)}
@@ -394,7 +445,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
   .estrella,.borrar,.seleccion-control{min-width:44px}
   .borrar{height:44px;width:44px}
   .tab,.tab-nombre,.tab-ocultar,.tab .borrar-tab{min-height:44px}
-  .obra-pisos summary,.dashboard-group summary{min-height:44px}
+  .obra-pisos summary{min-height:44px}
   .chk{min-height:44px}
   .obra input,.obra #agregar-obra,.ficha input,.ctrl-filtros select,.ctrl-filtros .buscar,.tab.act input,textarea.tarea{min-height:44px}
   .ficha{grid-auto-rows:44px}
@@ -426,6 +477,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
   .obras{padding:12px}
   .dashboard-panel{padding:16px}
   .dashboard-controls label{width:100%}
+  .dashboard-controls input,.dashboard-controls select{min-height:44px}
 }
 @media (prefers-reduced-motion:reduce){.barra i,.btn{transition:none}}
 @media print{
@@ -433,6 +485,12 @@ td.c-estado{padding-left:2px;padding-right:2px}
   .app-grid{display:block}
   header,thead th{print-color-adjust:exact;-webkit-print-color-adjust:exact}
   .tabla-wrap,tbody tr{border:1px solid #000}
+  /* Dashboard abierto: se imprime solo el tablero (Imprimir / guardar PDF) */
+  body.imprimiendo-dashboard > *:not(#dashboard){display:none!important}
+  body.imprimiendo-dashboard #dashboard{position:static!important;display:block!important;width:100%!important;max-height:none!important;overflow:visible!important;border:0!important;padding:0!important;margin:0!important;inset:auto!important}
+  body.imprimiendo-dashboard #dashboard .no-print,body.imprimiendo-dashboard #dashboard form,body.imprimiendo-dashboard #dashboard .dashboard-controls,body.imprimiendo-dashboard #dashboard .dashboard-actions,body.imprimiendo-dashboard #dashboard .nube-desc{display:none!important}
+  body.imprimiendo-dashboard .d-tabla-wrap{overflow:visible}
+  body.imprimiendo-dashboard .d-tabla{min-width:0}
 }
 
 </style>
@@ -442,7 +500,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
 <header>
   <img class="logo" src="logo.png" alt="3dF Desarrollos">
   <div class="titulo">
-    <h1>CHECKLIST TAREAS</h1>
+    <h1>OBRAS</h1>
     <div class="obra"><label for="obra">Obra:</label><input id="obra" data-meta="obra" autocomplete="off"><button class="btn" id="agregar-obra" type="button">+ Nueva obra</button></div>
     <div class="version-bar">
       <p id="version-badge" class="version-badge" aria-live="polite">Viendo: Oficial</p>
@@ -452,7 +510,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
   </div>
   <div class="header-sync" role="group" aria-label="Cuenta, Drive y dashboard">
     <button class="btn" id="cuenta-nube" type="button" aria-label="Cuenta y sincronización"><span id="cuenta-etiqueta">Cuenta / sincronización</span><span id="cuenta-email" hidden></span></button>
-    <button class="btn" id="abrir-drive" type="button" aria-label="Abrir Google Drive">Google Drive</button>
+    <button class="btn" id="abrir-drive" type="button" aria-label="Abrir la carpeta 3dF Obras en Google Drive">Google Drive</button>
     <button class="btn" id="dashboard-open" type="button">Dashboard</button>
     <span id="estado-nube" aria-live="polite">Solo en este dispositivo</span>
   </div>
@@ -469,7 +527,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
 <div class="app-top-main">
   <section id="plazos-banner" class="aviso" aria-label="Plazos próximos" hidden><h2>Vencen mañana</h2><ul id="plazos-lista"></ul></section>
   <section id="dashboard-banner" class="aviso" hidden><p>Dashboard del mes listo</p><button class="btn" id="dashboard-ready" type="button">Abrir dashboard</button><button class="btn" id="dashboard-dismiss" type="button">Ahora no</button></section>
-  <nav class="tabs" id="tabs" aria-label="Pestañas de checklist"></nav>
+  <nav class="tabs" id="tabs" aria-label="Pestañas de la planilla"></nav>
 
   <section class="resumen" aria-label="Resumen">
     <div class="dato"><b id="n-total">0</b><span>Tareas</span></div>
@@ -558,7 +616,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
   <section class="nube-panel" role="dialog" aria-modal="true" aria-labelledby="nube-titulo">
     <button type="button" id="nube-cerrar" class="nube-cerrar" aria-label="Cerrar">×</button>
     <h2 id="nube-titulo">Google Drive</h2>
-    <p class="nube-desc">Cada edificio guarda su Excel y sus fotos dentro de <b>3dF Checklist</b>. La versión en pantalla define la carpeta: <b>Oficial/Planillas/{obra}/</b> (checklist.xlsx y fotos) o <b>Versiones/{empleado}_{fecha}/Planillas/{obra}/</b>. Los dashboards siguen en <b>Dashboard Mensual</b>. Importar nunca pisa Oficial. Sin conexión se edita igual; al sincronizar se sube solo a la versión activa.</p>
+    <p class="nube-desc">Cada edificio guarda su Excel y sus fotos dentro de <b>3dF Obras</b>. La versión en pantalla define la carpeta: <b>Oficial/Planillas/{obra}/</b> ({obra}.xlsx y fotos) o <b>Versiones/{empleado}_{fecha}/Planillas/{obra}/</b>. Los dashboards siguen en <b>Dashboard Mensual</b>. Importar nunca pisa Oficial. Sin conexión se edita igual; al sincronizar se sube solo a la versión activa.</p>
     <div id="nube-setup" class="nube-desc nube-setup" hidden>
       <b>Falta configurar el acceso a Google (una sola vez, gratis):</b>
       <ol>
@@ -577,7 +635,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
       <button type="button" class="btn" id="nube-sync">Sincronizar ahora</button>
       <button type="button" class="btn" id="nube-salir">Cerrar sesión</button>
     </div>
-    <p class="nube-desc"><a id="nube-carpeta" href="#" target="_blank" rel="noopener" hidden>Abrir carpeta 3dF Checklist en Google Drive</a></p>
+    <p class="nube-desc"><a id="nube-carpeta" href="#" target="_blank" rel="noopener" hidden>Abrir carpeta 3dF Obras en Google Drive</a></p>
     <p id="nube-mensaje" class="nube-mensaje" aria-live="polite"></p>
     <p class="nube-nota">Cada persona usa su propia cuenta de Google: su Excel y sus fotos quedan solo en su Drive.</p>
   </section>
@@ -585,9 +643,10 @@ td.c-estado{padding-left:2px;padding-right:2px}
 
 <dialog id="dashboard" aria-labelledby="dashboard-title" class="dashboard-panel">
   <h2 id="dashboard-title">Dashboard mensual</h2><form method="dialog"><button class="btn dashboard-close" autofocus>Cerrar</button></form>
-  <div class="dashboard-controls"><label>Mes <input id="dashboard-month" type="month"></label><label>Obra <select id="dashboard-obra"></select></label><label>Piso <select id="dashboard-piso"></select></label><label>Departamento / unidad <select id="dashboard-unidad"></select></label></div>
-  <p class="nube-desc">Ejecutadas durante el mes y pendientes al cierre, según los datos disponibles. La fecha de ejecución se registra al marcar SÍ; para tareas anteriores sin ese dato se usa Fecha. Solo se incluye la obra de este checklist y los meses guardados en este dispositivo.</p>
-  <div id="dashboard-content"></div><div class="nube-acciones"><button type="button" class="btn" id="dashboard-export">Descargar dashboard</button><button type="button" class="btn" id="dashboard-drive">Guardar en Drive</button></div><p id="dashboard-status" role="status"></p>
+  <div class="dashboard-controls"><label>Mes <input id="dashboard-month" type="month"></label></div>
+  <p class="nube-desc">Ejecutadas durante el mes y pendientes al cierre, según los datos disponibles. La fecha de ejecución se registra al marcar SÍ; para tareas anteriores sin ese dato se usa Fecha. Los plazos y el contratista salen de cada tarea. Solo se incluyen las obras de este dispositivo y los meses guardados en él.</p>
+  <div id="dashboard-content"></div>
+  <div class="nube-acciones dashboard-actions"><button type="button" class="btn" id="dashboard-print">Imprimir / guardar PDF</button><button type="button" class="btn" id="dashboard-export">Descargar dashboard</button><button type="button" class="btn" id="dashboard-drive">Guardar en Drive</button></div><p id="dashboard-status" role="status"></p>
 </dialog>
 <datalist id="dl-rubro"></datalist>
 <datalist id="dl-contratista"></datalist>
@@ -1131,7 +1190,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
       lineas.push([fechaAR(r.fecha),r.tarea,r.piso,r.unidad,r.ambiente,r.ejecutado,r.rubro,r.contratista,r.ingresado,fechaAR(r.plazo),r.importante?'SÍ':'NO'].map(csvCelda).join(';'));
     });
     var blob = new Blob(['\ufeff'+lineas.join('\r\n')], {type:'text/csv'});
-    entregar(blob, 'checklist-' + slugTab() + '-' + hoyISO() + '.csv', 'text/csv');
+    entregar(blob, '3dF-' + slugTab() + '-' + hoyISO() + '.csv', 'text/csv');
   });
 
   if (completarUbicacion(tabActiva())) guardar();
@@ -1592,7 +1651,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
         c.value = valor; c.font = fuente; c.alignment = alin; c.fill = relleno(NEGRO);
       }
       var izq = { vertical:'middle', horizontal:'left', indent:1 }, der = { vertical:'middle', horizontal:'right' };
-      texto('B1:G1', 'CHECKLIST TAREAS', { name:'Arial', size:18, bold:true, color:BLANCO }, izq);
+      texto('B1:G1', 'OBRAS', { name:'Arial', size:18, bold:true, color:BLANCO }, izq);
       texto('B2:G2', 'OBRA: ' + obraDe(tab) + '  -  ' + tab.nombre, { name:'Arial', size:11, color:BLANCO }, izq);
       texto('B3:G3', '3dF Desarrollos', { name:'Arial', size:9, color:{ argb:'FFCCCCCC' } }, izq);
       texto('H1:J1', String(state.meta.codigo || ''), { name:'Arial', size:9, bold:true, color:BLANCO }, der);
@@ -1672,7 +1731,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
 
     var tipo = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     wb.xlsx.writeBuffer().then(function(buf){
-      entregar(new Blob([buf], { type:tipo }), 'checklist-' + slugObra() + '-' + hoyISO() + '.xlsx', tipo);
+      entregar(new Blob([buf], { type:tipo }), '3dF-' + slugObra() + '-' + hoyISO() + '.xlsx', tipo);
     }).catch(function(){ alert('No se pudo generar el Excel. Probá de nuevo.'); });
   }
   $('#xls').addEventListener('click', function(){
@@ -1731,7 +1790,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
     }
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica','bold'); doc.setFontSize(15);
-    doc.text('CHECKLIST TAREAS', x, 14);
+    doc.text('OBRAS', x, 14);
     doc.setFont('helvetica','normal'); doc.setFontSize(9);
     doc.text('Obra: ' + obraActiva() + '  ·  Pestaña: ' + tabActiva().nombre, x, 22);
     doc.setFontSize(8);
@@ -1868,7 +1927,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
         });
       }
     }
-    var nombre = 'checklist-' + slugTab() + '-' + hoyISO() + '.pdf';
+    var nombre = '3dF-' + slugTab() + '-' + hoyISO() + '.pdf';
     var buf = doc.output('arraybuffer');
     return {blob:new Blob([buf], {type:'application/pdf'}), nombre:nombre};
   }
@@ -1879,7 +1938,9 @@ td.c-estado{padding-left:2px;padding-right:2px}
   // No es un secreto: es un identificador público. Ver SETUP-GOOGLE.md.
   var GOOGLE_CLIENT_ID = '998929723356-hdjao8aaqovh9ki23tdq3g7ofuf0hq48.apps.googleusercontent.com';
   var DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
-  var CARPETA = '3dF Checklist', ARCHIVO = 'checklist.xlsx', CARPETA_FOTOS = 'fotos';
+  var CARPETA = '3dF Obras', CARPETA_VIEJA = '3dF Checklist', ARCHIVO_VIEJO = 'checklist.xlsx', CARPETA_FOTOS = 'fotos';
+  // Excel por obra: "{obra}.xlsx" (mismo nombre que la carpeta de la obra). Se sigue reconociendo "checklist.xlsx" y se renombra al sincronizar.
+  function nombreExcel(nombreObra){ return sanitizarNombreArchivo(nombreObra).slice(0, 100) + '.xlsx'; }
   var VERSION_OFICIAL = 'oficial';
   var FOLDER_MIME = 'application/vnd.google-apps.folder';
   var XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -1970,7 +2031,8 @@ td.c-estado{padding-left:2px;padding-right:2px}
       estadoNube('No hay nadie logueado');
       return;
     }
-    var id = carpetaVisibleId();
+    // Abre la raíz "3dF Obras" (donde están Oficial y Versiones), no la carpeta de la versión en pantalla.
+    var id = driveIds.folder;
     if (id) window.open('https://drive.google.com/drive/folders/' + id, '_blank', 'noopener');
     else window.open('https://drive.google.com/drive/my-drive', '_blank', 'noopener');
   });
@@ -2121,10 +2183,20 @@ td.c-estado{padding-left:2px;padding-right:2px}
       lsSet(LS.ids, driveIds);
     });
   }
+  function carpetaRaiz(){
+    // Carpeta guardada → 3dF Obras → 3dF Checklist (se renombra) → crear.
+    return infoArchivo(driveIds.folder).then(function(f){
+      if (f) return f.id;
+      return buscarArchivo(CARPETA, 'root', FOLDER_MIME).then(function(x){
+        if (x) return x.id;
+        return buscarArchivo(CARPETA_VIEJA, 'root', FOLDER_MIME).then(function(v){ return v ? v.id : crearCarpeta(CARPETA, 'root'); });
+      });
+    });
+  }
   function asegurarCarpetas(){
     // 3dF Checklist/Oficial/Planillas/{obra} o Versiones/{id}/Planillas/{obra}.
     // Dashboard Mensual sigue al lado de Oficial, en la raíz del checklist.
-    return carpetaHija(driveIds.folder, CARPETA, 'root').then(function(id){
+    return carpetaRaiz().then(function(id){
       if (id !== driveIds.folder) {
         driveIds.file = null; driveIds.fotos = null; driveIds.planillas = null; driveIds.oficial = null;
         driveIds.versiones = null; driveIds.dashboard = null; driveIds.filesByObra = {};
@@ -2178,7 +2250,14 @@ td.c-estado{padding-left:2px;padding-right:2px}
     return listarHijos(driveIds.planillas, FOLDER_MIME).then(function(folders){
       return folders.reduce(function(p, folder){
         return p.then(function(acc){
-          return buscarArchivo(ARCHIVO, folder.id).then(function(f){
+          return buscarArchivo(nombreExcel(folder.name), folder.id).then(function(f){
+            if (f) return f;
+            // Nombre viejo: checklist.xlsx → {obra}.xlsx
+            return buscarArchivo(ARCHIVO_VIEJO, folder.id).then(function(v){
+              if (!v) return null;
+              return renombrarArchivo(v.id, nombreExcel(folder.name)).then(function(){ return v; }, function(e){ if (e && e.auth) throw e; return v; });
+            });
+          }).then(function(f){
             if (f) acc.push({ obra: folder.name, folderId: folder.id, file: f, slug: slugNombre(folder.name) });
             return acc;
           });
@@ -2187,8 +2266,8 @@ td.c-estado{padding-left:2px;padding-right:2px}
     }).then(function(porObra){
       // Detect legacy loose Excels for one-time migration (not for ongoing sync reads once porObra exists).
       return Promise.all([
-        buscarArchivo(ARCHIVO, driveIds.planillas),
-        buscarArchivo(ARCHIVO, driveIds.folder),
+        buscarArchivo(ARCHIVO_VIEJO, driveIds.planillas),
+        buscarArchivo(ARCHIVO_VIEJO, driveIds.folder),
         infoArchivo(driveIds.file)
       ]).then(function(found){
         var legacy = found[0] || found[1] || found[2] || null;
@@ -2234,7 +2313,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
             // Build workbook for this obra from the current local constructor using a temporary filter:
             // temporarily apply slice tabs into a throwaway construirExcel via state? Safer: upload via construirExcel after merging into state only for missing obras.
             return carpetaPlanillaObra(nombre).then(function(folderId){
-              return buscarArchivo(ARCHIVO, folderId).then(function(existente){
+              return buscarArchivo(nombreExcel(nombre), folderId).then(function(existente){
                 if (existente) {
                   if (!driveIds.filesByObra) driveIds.filesByObra = {};
                   driveIds.filesByObra[slugNombre(nombre)] = existente.id;
@@ -2245,7 +2324,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
                 var tabsBackup = state.tabs, activaBackup = state.activa, metaBackup = state.meta;
                 state.tabs = slice.tabs; state.activa = slice.activa; if (slice.meta) state.meta = Object.assign({}, state.meta, slice.meta, { obra: nombre });
                 return Promise.resolve().then(function(){ return construirExcel(nombre); }).then(function(blob){
-                  return subirMultipart({ name:ARCHIVO, mimeType:XLSX_MIME, parents:[folderId] }, blob);
+                  return subirMultipart({ name:nombreExcel(nombre), mimeType:XLSX_MIME, parents:[folderId] }, blob);
                 }).then(function(j){
                   if (!driveIds.filesByObra) driveIds.filesByObra = {};
                   driveIds.filesByObra[slugNombre(nombre)] = j.id;
@@ -3220,7 +3299,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
         zip.file('manifest.json', JSON.stringify(manifest, null, 2));
         zip.file('checklist.json', JSON.stringify(doc, null, 2));
         return excelDeObra(obra).then(function(blob){
-          if (blob) zip.file('checklist.xlsx', blob);
+          if (blob) zip.file(nombreExcel(obra), blob);
           return zip.generateAsync({ type:'blob', compression:'DEFLATE' });
         }).then(function(blob){
           var nombre = '3dF_' + (slugNombre(obra) || 'obra') + '_' + (vid === VERSION_OFICIAL ? 'oficial' : vid) + '.zip';
@@ -3231,7 +3310,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
   }
   function validarManifest(manifest){
     if (!manifest) return;
-    if (manifest.app && manifest.app !== '3df-checklist') throw new Error('Este ZIP no es una exportación de 3dF Checklist.');
+    if (manifest.app && manifest.app !== '3df-checklist') throw new Error('Este ZIP no es una exportación de 3dF Obras.');
     if (Number(manifest.schemaVersion || 1) > 1) throw new Error('Esta exportación es de una versión más nueva de la app.');
   }
   function cargarFotosZip(zip, pack){
@@ -3265,7 +3344,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
   function leerPaquete(zip){
     var manFile = zip.file('manifest.json');
     var jsonFile = zip.file('checklist.json');
-    var xlsxFile = zip.file('checklist.xlsx');
+    var xlsxFile = zip.file('checklist.xlsx') || (zip.file(/\.xlsx$/i)[0] || null);
     if (!jsonFile && !xlsxFile) throw new Error('El archivo no tiene la checklist exportada.');
     return Promise.resolve().then(function(){
       if (!manFile) return null;
@@ -3543,7 +3622,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
             }
             var p = existente
               ? api(UPLOAD + '/' + existente.id + '?uploadType=media&fields=id,modifiedTime', { method:'PATCH', headers:{ 'Content-Type':XLSX_MIME }, body:blob }).then(json)
-              : subirMultipart({ name:ARCHIVO, mimeType:XLSX_MIME, parents:[folderId] }, blob);
+              : subirMultipart({ name:nombreExcel(nombreObra), mimeType:XLSX_MIME, parents:[folderId] }, blob);
             return p.then(function(j){
               if (!driveIds.filesByObra) driveIds.filesByObra = {};
               driveIds.filesByObra[slug] = j.id;
@@ -3714,7 +3793,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
   function registrosActuales(){
     var registros=[];
     state.tabs.forEach(function(t){(t.rows||[]).forEach(function(r){
-      registros.push({obra:obraDe(t),tab:t.nombre,tarea:r.tarea||'Sin título',unidad:r.unidad||'Sin unidad',piso:r.piso||'Sin piso',rubro:r.rubro||'Sin rubro',fecha:r.fecha||'',creadoEn:r.creadoEn||r.fecha||'',completadoEn:r.completadoEn||(r.ejecutado==='SI'?r.fecha||'':''),ejecutado:r.ejecutado,plazo:r.plazo||'',importante:!!r.importante});
+      registros.push({obra:obraDe(t),tab:t.nombre,tarea:r.tarea||'Sin título',unidad:r.unidad||'Sin unidad',piso:r.piso||'Sin piso',rubro:r.rubro||'Sin rubro',contratista:r.contratista||'',fecha:r.fecha||'',creadoEn:r.creadoEn||r.fecha||'',completadoEn:r.completadoEn||(r.ejecutado==='SI'?r.fecha||'':''),ejecutado:r.ejecutado,plazo:r.plazo||'',importante:!!r.importante});
     });});return registros;
   }
   function guardarSnapshot(){
@@ -3730,43 +3809,210 @@ td.c-estado{padding-left:2px;padding-right:2px}
     }).map(function(r){var copia=Object.assign({},r);copia.ejecutado=r.completadoEn ? (r.completadoEn.slice(0,7)<=mes?'SI':'NO') : r.ejecutado;return copia;});
   }
   function escHtml(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-  function dashboardMarkup(rows){
-    var hechas=rows.filter(function(r){return r.ejecutado==='SI';}).length,total=rows.length,pct=total?Math.round(hechas*100/total):0;
-    var html='<div class="dashboard-cards">'+[['Tareas',total],['Ejecutadas',hechas],['Pendientes',total-hechas],['Avance',pct+'%']].map(function(d){return '<div class="dashboard-card">'+escHtml(d[0])+'<b>'+escHtml(d[1])+'</b></div>';}).join('')+'</div>';
-    if(!total)return html+'<p>No hay tareas para este mes y estos filtros.</p>';
-    [['obra','Por obra'],['unidad','Por departamento / unidad'],['piso','Por piso'],['rubro','Por rubro']].forEach(function(par){
-      var grupos={};rows.forEach(function(r){var key=r[par[0]]||'Sin dato';if(!Object.prototype.hasOwnProperty.call(grupos,key))Object.defineProperty(grupos,key,{value:[],enumerable:true});grupos[key].push(r);});
-      html+='<section class="dashboard-breakdown"><h3>'+par[1]+'</h3>';
-      Object.keys(grupos).sort(function(a,b){return a.localeCompare(b,'es');}).forEach(function(key){
-        var lista=grupos[key], n=lista.filter(function(r){return r.ejecutado==='SI';}).length, p=Math.round(n*100/lista.length);
-        html+='<details class="dashboard-group"><summary>'+escHtml(key)+' · '+n+' ejecutadas / '+(lista.length-n)+' pendientes · '+p+'%</summary><ul>'+lista.map(function(r){return '<li>'+escHtml(r.tab+' · '+r.tarea)+' — '+(r.ejecutado==='SI'?'Ejecutada':'Pendiente')+(r.plazo?' · plazo '+escHtml(r.plazo):'')+'</li>';}).join('')+'</ul></details><div class="dashboard-bar" role="img" aria-label="'+p+'% ejecutado"><i style="width:'+p+'%"></i></div>';
-      });html+='</section>';
-    });return html;
+  function dashboardApp(root){
+    // Autocontenida (no usa nada de afuera): corre dentro de la app y se embebe tal cual en el HTML exportado.
+    var estado={obra:'',piso:'',rubro:'',contratista:'',vista:''}, rows=[], ctx={}, firma='';
+    var CAMPOS=[['obra','Obra','Todas'],['piso','Piso','Todos'],['rubro','Rubro','Todos'],['contratista','Contratista','Todos']];
+    var VISTAS={venc:'Vencidas',sem:'Vencen esta semana',comp:'Completadas en el mes',pend:'Pendientes'};
+    function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+    function p2(n){return (n<10?'0':'')+n;}
+    function fmt(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
+    function aFecha(iso){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(iso||'');return m?new Date(+m[1],+m[2]-1,+m[3],12):null;}
+    function sumaDias(iso,n){var d=aFecha(iso);d.setDate(d.getDate()+n);return fmt(d);}
+    function dias(desde,hasta){return Math.round((aFecha(hasta)-aFecha(desde))/86400000);}
+    function fechaAR(iso){var d=aFecha(iso);return d?d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear():'';}
+    function corta(iso){var d=aFecha(iso);return d?p2(d.getDate())+'/'+p2(d.getMonth()+1):'';}
+    function refFecha(){
+      var hoy=ctx.hoy||fmt(new Date());
+      if(ctx.mes===hoy.slice(0,7))return hoy;
+      var a=ctx.mes.split('-');return fmt(new Date(+a[0],+a[1],0,12));
+    }
+    function clasif(r,ref){
+      var hecha=r.ejecutado==='SI', lim=r.plazo||'';
+      return {
+        hecha:hecha,
+        venc:!hecha&&!!lim&&lim<ref,
+        sem:!hecha&&!!lim&&lim>=ref&&lim<=sumaDias(ref,7),
+        comp:hecha&&(r.completadoEn||'').slice(0,7)===ctx.mes
+      };
+    }
+    function dato(r,k){return r[k]||('Sin '+(k==='contratista'?'contratista':k));}
+    function filtrar(lista,omitir){
+      return lista.filter(function(r){
+        return CAMPOS.every(function(c){var k=c[0];return k===omitir||!estado[k]||dato(r,k)===estado[k];});
+      });
+    }
+    function stats(lista,ref){
+      var s={total:lista.length,hechas:0,venc:0,sem:0,comp:0};
+      lista.forEach(function(r){var c=clasif(r,ref);if(c.hecha)s.hechas++;if(c.venc)s.venc++;if(c.sem)s.sem++;if(c.comp)s.comp++;});
+      s.pend=s.total-s.hechas;s.pct=s.total?Math.round(s.hechas*100/s.total):0;
+      return s;
+    }
+    function agrupar(lista,k){var g={};lista.forEach(function(r){var v=dato(r,k);(g[v]=g[v]||[]).push(r);});return g;}
+    function estadoTexto(r,ref){
+      var c=clasif(r,ref);
+      if(c.hecha)return 'Ejecutada'+(r.completadoEn?' el '+fechaAR(r.completadoEn):'');
+      if(!r.plazo)return 'Pendiente · sin plazo';
+      var n=dias(ref,r.plazo);
+      if(n<0)return 'Vencida hace '+(-n)+(n===-1?' día':' días');
+      if(n===0)return 'Vence hoy';
+      return 'Vence en '+n+(n===1?' día':' días');
+    }
+    function semanasHtml(lista,ref){
+      var por={};
+      lista.forEach(function(r){
+        var c=clasif(r,ref);if(!c.comp)return;
+        var d=aFecha(r.completadoEn);d.setDate(d.getDate()-((d.getDay()+6)%7));
+        var k=fmt(d);por[k]=(por[k]||0)+1;
+      });
+      var a=ctx.mes.split('-'), ini=new Date(+a[0],+a[1]-1,1,12);ini.setDate(ini.getDate()-((ini.getDay()+6)%7));
+      var fin=aFecha(ref), claves=[];
+      while(ini<=fin){claves.push(fmt(ini));ini.setDate(ini.getDate()+7);}
+      var max=1;claves.forEach(function(k){if((por[k]||0)>max)max=por[k];});
+      var total=0;claves.forEach(function(k){total+=por[k]||0;});
+      if(!total)return '<p class="d-vacio">Todavía no hay tareas completadas en este mes con estos filtros.</p>';
+      return '<ol class="d-semanas">'+claves.map(function(k){
+        var n=por[k]||0;
+        return '<li class="d-sem"><span class="d-sem-n">'+n+'</span><span class="d-sem-col"><i style="height:'+Math.round(n*100/max)+'%"></i></span><span class="d-sem-et">Sem. '+corta(k)+'</span></li>';
+      }).join('')+'</ol>';
+    }
+    function rankingHtml(lista,ref){
+      var g=agrupar(lista,'contratista'), arr=[];
+      Object.keys(g).forEach(function(k){var s=stats(g[k],ref);if(s.venc>0)arr.push({k:k,venc:s.venc,pend:s.pend});});
+      arr.sort(function(x,y){return y.venc-x.venc||x.k.localeCompare(y.k,'es');});
+      if(!arr.length)return '<p class="d-vacio">No hay tareas vencidas con estos filtros.</p>';
+      var max=arr[0].venc;
+      return '<ul class="d-rank">'+arr.slice(0,8).map(function(x){
+        var on=estado.contratista===x.k;
+        return '<li><button type="button" class="d-fila" data-key="f:contratista:'+esc(x.k)+'" data-f="contratista" data-v="'+esc(x.k)+'" aria-pressed="'+on+'" aria-label="Filtrar por contratista '+esc(x.k)+': '+x.venc+' vencidas de '+x.pend+' pendientes">'
+          +'<span class="d-fila-n">'+esc(x.k)+'</span><span class="d-barra"><i style="width:'+Math.round(x.venc*100/max)+'%"></i></span><b>'+x.venc+'</b></button></li>';
+      }).join('')+'</ul>'+(arr.length>8?'<p class="d-nota">Se muestran los 8 con más vencidas de '+arr.length+'.</p>':'');
+    }
+    function obrasHtml(lista,ref){
+      var g=agrupar(lista,'obra'), arr=Object.keys(g).map(function(k){var s=stats(g[k],ref);return {k:k,s:s};});
+      arr.sort(function(x,y){return y.s.venc-x.s.venc||x.s.pct-y.s.pct||x.k.localeCompare(y.k,'es');});
+      if(!arr.length)return '<p class="d-vacio">Sin obras para mostrar.</p>';
+      return '<div class="d-obras">'+arr.map(function(o){
+        var on=estado.obra===o.k;
+        return '<button type="button" class="d-obra" data-key="f:obra:'+esc(o.k)+'" data-f="obra" data-v="'+esc(o.k)+'" aria-pressed="'+on+'" aria-label="Filtrar por obra '+esc(o.k)+': '+o.s.pct+'% ejecutado, '+o.s.venc+' vencidas">'
+          +'<span class="d-obra-t">'+esc(o.k)+'</span>'
+          +'<span class="d-barra" role="img" aria-label="'+o.s.pct+'% ejecutado"><i style="width:'+o.s.pct+'%"></i></span>'
+          +'<span class="d-obra-d"><b>'+o.s.pct+'%</b> · '+o.s.hechas+' de '+o.s.total+' ejecutadas · '+o.s.venc+' vencidas · '+o.s.sem+' vencen en 7 días</span></button>';
+      }).join('')+'</div>';
+    }
+    function tablaHtml(lista,ref){
+      var v=estado.vista, vis=lista.filter(function(r){
+        var c=clasif(r,ref);
+        return !v||(v==='venc'&&c.venc)||(v==='sem'&&c.sem)||(v==='comp'&&c.comp)||(v==='pend'&&!c.hecha);
+      });
+      vis.sort(function(a,b){
+        var ca=clasif(a,ref),cb=clasif(b,ref);
+        if(ca.venc!==cb.venc)return ca.venc?-1:1;
+        if(ca.hecha!==cb.hecha)return ca.hecha?1:-1;
+        return (a.plazo||'9999').localeCompare(b.plazo||'9999')||String(a.tarea).localeCompare(String(b.tarea),'es');
+      });
+      var LIM=150, corte=vis.slice(0,LIM);
+      var cab='<p class="d-nota" role="status">'+vis.length+(vis.length===1?' tarea':' tareas')+(v?' · '+esc(VISTAS[v]):'')+(vis.length>LIM?' · se muestran las primeras '+LIM+' (usá los filtros para acotar)':'')+'</p>';
+      if(!vis.length)return cab+'<p class="d-vacio">No hay tareas con estos filtros.</p>';
+      return cab+'<div class="d-tabla-wrap" tabindex="0" role="region" aria-label="Tabla de tareas, desplazable"><table class="d-tabla"><thead><tr><th scope="col">Obra</th><th scope="col">Tarea</th><th scope="col">Piso / unidad</th><th scope="col">Rubro</th><th scope="col">Contratista</th><th scope="col">Plazo</th><th scope="col">Estado</th></tr></thead><tbody>'
+        +corte.map(function(r){
+          var c=clasif(r,ref);
+          return '<tr'+(c.venc?' class="venc"':'')+'><td>'+esc(r.obra)+'</td><td>'+esc(r.tarea)+(r.importante?' <b title="Importante">★</b>':'')+'</td><td>'+esc(dato(r,'piso')+' · '+dato(r,'unidad'))+'</td><td>'+esc(dato(r,'rubro'))+'</td><td>'+esc(dato(r,'contratista'))+'</td><td>'+(r.plazo?fechaAR(r.plazo):'—')+'</td><td>'+esc(estadoTexto(r,ref))+'</td></tr>';
+        }).join('')+'</tbody></table></div>';
+    }
+    function kpiHtml(clave,valor,etq,sub){
+      var base='<b>'+valor+'</b><span>'+etq+'</span>'+(sub?'<small>'+sub+'</small>':'');
+      if(!clave)return '<div class="d-kpi">'+base+'</div>';
+      return '<button type="button" class="d-kpi" data-key="v:'+clave+'" data-v="'+clave+'" data-vista="1" aria-pressed="'+(estado.vista===clave)+'">'+base+'</button>';
+    }
+    function pintar(){
+      var ref=refFecha(), todo=filtrar(rows,''), s=stats(todo,ref);
+      var porObra=agrupar(todo,'obra'), nObras=0, conVenc=0;
+      Object.keys(porObra).forEach(function(k){nObras++;if(stats(porObra[k],ref).venc>0)conVenc++;});
+      var sel=CAMPOS.map(function(c){
+        var k=c[0], vals=Object.keys(agrupar(rows,k)).sort(function(a,b){return a.localeCompare(b,'es');});
+        return '<label>'+c[1]+'<select data-key="s:'+k+'" data-sel="'+k+'"><option value="">'+c[2]+'</option>'+vals.map(function(v){return '<option value="'+esc(v)+'"'+(estado[k]===v?' selected':'')+'>'+esc(v)+'</option>';}).join('')+'</select></label>';
+      }).join('');
+      var chips=CAMPOS.filter(function(c){return estado[c[0]];}).map(function(c){
+        return '<button type="button" class="d-chip" data-key="x:'+c[0]+'" data-quitar="'+c[0]+'" aria-label="Quitar filtro '+c[1]+': '+esc(estado[c[0]])+'">'+c[1]+': '+esc(estado[c[0]])+' ✕</button>';
+      });
+      if(estado.vista)chips.push('<button type="button" class="d-chip" data-key="x:vista" data-quitar="vista" aria-label="Quitar filtro '+esc(VISTAS[estado.vista])+'">'+esc(VISTAS[estado.vista])+' ✕</button>');
+      var filtrosTxt=CAMPOS.filter(function(c){return estado[c[0]];}).map(function(c){return c[1]+': '+estado[c[0]];}).concat(estado.vista?[VISTAS[estado.vista]]:[]).join(' · ')||'sin filtros';
+      root.innerHTML=
+        '<div class="d-root">'
+        +'<div class="d-filtros no-print">'+sel+(chips.length?'<button type="button" class="d-btn" data-key="clear" data-clear="1">Limpiar filtros</button>':'')+'</div>'
+        +(chips.length?'<div class="d-chips no-print">'+chips.join('')+'</div>':'')
+        +'<div class="d-kpis">'
+          +kpiHtml('',s.pct+'%','Ejecutado',s.hechas+' de '+s.total+' tareas')
+          +kpiHtml('venc',s.venc,'Vencidas','plazo anterior a '+fechaAR(ref))
+          +kpiHtml('sem',s.sem,'Vencen esta semana','próximos 7 días')
+          +kpiHtml('comp',s.comp,'Completadas en el mes',esc(ctx.nombreMes||ctx.mes))
+          +kpiHtml('',nObras,nObras===1?'Obra':'Obras',conVenc+(conVenc===1?' con tareas vencidas':' con tareas vencidas'))
+        +'</div>'
+        +(s.total?
+          '<section class="d-sec" aria-labelledby="d-h-obras"><h3 id="d-h-obras">Estado por obra</h3><p class="d-nota">Tocá una obra para filtrar todo el tablero. Ordenadas por cantidad de tareas vencidas.</p>'+obrasHtml(filtrar(rows,'obra'),ref)+'</section>'
+          +'<div class="d-dos">'
+            +'<section class="d-sec" aria-labelledby="d-h-sem"><h3 id="d-h-sem">Completadas por semana</h3><p class="d-nota">Según la fecha de ejecución registrada.</p>'+semanasHtml(todo,ref)+'</section>'
+            +'<section class="d-sec" aria-labelledby="d-h-rank"><h3 id="d-h-rank">Contratistas con más vencidas</h3><p class="d-nota">Tocá uno para ver sus tareas.</p>'+rankingHtml(filtrar(rows,'contratista'),ref)+'</section>'
+          +'</div>'
+          +'<section class="d-sec" aria-labelledby="d-h-tab"><h3 id="d-h-tab">Detalle de tareas</h3>'+tablaHtml(todo,ref)+'</section>'
+          :'<p class="d-vacio">No hay tareas para este mes y estos filtros.</p>')
+        +'<p class="d-pie">Datos al '+fechaAR(ctx.hoy||fmt(new Date()))+' · '+esc(ctx.nombreMes||ctx.mes)+' · Filtros: '+esc(filtrosTxt)+'. Ejecutadas durante el mes y pendientes al cierre, según los datos disponibles.</p>'
+        +'</div>';
+    }
+    function conFoco(fn){
+      var a=document.activeElement, key=a&&root.contains(a)?a.getAttribute('data-key'):null;
+      fn();
+      if(key){var n=root.querySelector('[data-key="'+key.replace(/"/g,'\\"')+'"]');if(n)n.focus();}
+    }
+    function alternar(k,v){estado[k]=estado[k]===v?'':v;}
+    root.addEventListener('click',function(e){
+      var b=e.target.closest?e.target.closest('button'):null;if(!b||!root.contains(b))return;
+      if(b.hasAttribute('data-clear')){estado={obra:'',piso:'',rubro:'',contratista:'',vista:''};}
+      else if(b.hasAttribute('data-quitar')){estado[b.getAttribute('data-quitar')]='';}
+      else if(b.hasAttribute('data-vista')){alternar('vista',b.getAttribute('data-v'));}
+      else if(b.hasAttribute('data-f')){alternar(b.getAttribute('data-f'),b.getAttribute('data-v'));}
+      else return;
+      conFoco(pintar);
+    });
+    root.addEventListener('change',function(e){
+      var s=e.target;if(!s.hasAttribute||!s.hasAttribute('data-sel'))return;
+      estado[s.getAttribute('data-sel')]=s.value;conFoco(pintar);
+    });
+    return {
+      set:function(nuevas,c){
+        var f=JSON.stringify([nuevas,c]);
+        rows=nuevas;ctx=c;
+        // Si los datos no cambiaron no se repinta: no se pierde el foco ni el scroll mientras se mira.
+        if(f===firma)return;firma=f;
+        // Un filtro que ya no existe en los datos nuevos se descarta.
+        CAMPOS.forEach(function(k){if(estado[k[0]]&&!rows.some(function(r){return dato(r,k[0])===estado[k[0]];}))estado[k[0]]='';});
+        conFoco(pintar);
+      }
+    };
   }
-  function opcionesDashboard(id,rows,campo,todas){
-    var select=$(id), previa=select.value, valores=Array.from(new Set(rows.map(function(r){return r[campo];}))).sort(function(a,b){return a.localeCompare(b,'es');});
-    select.textContent='';var inicial=document.createElement('option');inicial.value='';inicial.textContent=todas;select.appendChild(inicial);
-    valores.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;select.appendChild(o);});
-    if(valores.indexOf(previa)>=0)select.value=previa;
-  }
-  function actualizarDashboard(filtros){
+  var dashApp=null;
+  function actualizarDashboard(){
     var mes=$('#dashboard-month').value||mesActual(); if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(mes))return;
-    var rows=filasMes(mes);
-    if(filtros){opcionesDashboard('#dashboard-obra',rows,'obra','Todas las obras');opcionesDashboard('#dashboard-piso',rows,'piso','Todos los pisos');opcionesDashboard('#dashboard-unidad',rows,'unidad','Todas las unidades');}
-    rows=rows.filter(function(r){return (!$('#dashboard-obra').value||r.obra===$('#dashboard-obra').value)&&(!$('#dashboard-piso').value||r.piso===$('#dashboard-piso').value)&&(!$('#dashboard-unidad').value||r.unidad===$('#dashboard-unidad').value);});
-    $('#dashboard-content').innerHTML=dashboardMarkup(rows);
+    if(!dashApp) dashApp=dashboardApp($('#dashboard-content'));
+    dashApp.set(filasMes(mes),{mes:mes,hoy:hoyISO(),nombreMes:nombreMes(mes)});
     $('#dashboard-title').textContent='Dashboard · '+nombreMes(mes);
   }
   function abrirDashboard(mes){
-    guardarSnapshot();$('#dashboard-month').value=typeof mes==='string'?mes:mesActual();actualizarDashboard(true);
+    guardarSnapshot();$('#dashboard-month').value=typeof mes==='string'?mes:mesActual();actualizarDashboard();
     $('#dashboard-status').textContent='';if(!$('#dashboard').open)$('#dashboard').showModal();
     lsSet(DASHBOARD_LAST_KEY,mesActual());
     if(!$('#dashboard-banner').hidden) lsSet('3df-dashboard-fin',mesListo);
     $('#dashboard-banner').hidden=true;
   }
   $('#dashboard-open').addEventListener('click',function(){abrirDashboard(mesActual());});
-  $('#dashboard-month').addEventListener('change',function(){actualizarDashboard(true);});
-  ['#dashboard-obra','#dashboard-piso','#dashboard-unidad'].forEach(function(id){$(id).addEventListener('change',function(){actualizarDashboard(false);});});
+  $('#dashboard-month').addEventListener('change',function(){actualizarDashboard();});
+  $('#dashboard-print').addEventListener('click',function(){
+    document.body.classList.add('imprimiendo-dashboard');
+    var quitar=function(){document.body.classList.remove('imprimiendo-dashboard');window.removeEventListener('afterprint',quitar);};
+    window.addEventListener('afterprint',quitar);
+    window.print();
+  });
   var mesListo=mesActual();
   function revisarDashboardMensual(){
     var actual=mesActual(),ultimo=lsGet(DASHBOARD_LAST_KEY,'');
@@ -3783,11 +4029,13 @@ td.c-estado{padding-left:2px;padding-right:2px}
   $('#dashboard-ready').addEventListener('click',function(){confirmarDashboardListo();abrirDashboard(mesListo);});
   $('#dashboard-dismiss').addEventListener('click',confirmarDashboardListo);
   function exportarDashboardHTML(mes){
-    // Export embeds the whole month's data (not just active filters), with standalone interactivity.
+    // El HTML exportado lleva todos los datos del mes y el mismo tablero interactivo (filtros incluidos), sin conexión.
     var data=JSON.stringify(filasMes(mes)).replace(/</g,'\\u003c');
-    var css='html,body{scrollbar-width:thin;scrollbar-color:#000 #f3f3f3}body{margin:0 auto;padding:24px;font:15px/1.45 Archivo,Helvetica,Arial,sans-serif;background:#fff;color:#000;max-width:1000px}h1{overflow-wrap:anywhere;font-weight:800}select{padding:8px 10px;border:2px solid #000;border-radius:0;background:#fff;margin:8px}.dashboard-cards{display:flex;gap:12px;flex-wrap:wrap}.dashboard-card,.dashboard-breakdown{border:2px solid #000;padding:16px;margin:16px 0}.dashboard-card b{display:block;font-size:30px}.dashboard-bar{height:12px;border:2px solid #000;background:#fff;overflow:hidden;margin:4px 0 16px}.dashboard-bar i{display:block;height:100%;background:#000}.dashboard-group summary{padding:12px 0;cursor:pointer}:focus-visible{outline:2px solid #000;outline-offset:2px}';
-    var script='var rows='+data+';'+escHtml.toString()+';'+dashboardMarkup.toString()+';function render(){var obra=document.getElementById("obra").value,piso=document.getElementById("piso").value,unidad=document.getElementById("unidad").value;document.getElementById("datos").innerHTML=dashboardMarkup(rows.filter(function(r){return (!obra||r.obra===obra)&&(!piso||r.piso===piso)&&(!unidad||r.unidad===unidad);}));} ["obra","piso","unidad"].forEach(function(k){var select=document.getElementById(k);Array.from(new Set(rows.map(function(r){return r[k];}))).sort().forEach(function(v){var o=document.createElement("option");o.value=v;o.textContent=v;select.appendChild(o);});select.addEventListener("change",render);});render();';
-    var html='<!doctype html><html lang="es-AR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escHtml(nombreMes(mes))+' · 3dF Desarrollos</title><style>'+css+'</style><h1>3dF Desarrollos</h1><h2>Dashboard · '+escHtml(nombreMes(mes))+'</h2><p>Ejecutadas durante el mes y pendientes al cierre según los datos disponibles. Exportado el '+escHtml(fechaAR(hoyISO()))+'. Tocá cada grupo para ver las tareas.</p><label>Obra <select id="obra"><option value="">Todas</option></select></label><label>Piso <select id="piso"><option value="">Todos</option></select></label><label>Departamento / unidad <select id="unidad"><option value="">Todas</option></select></label><main id="datos"></main><script>'+script+'<\/script></html>';
+    var ctx=JSON.stringify({mes:mes,hoy:hoyISO(),nombreMes:nombreMes(mes)}).replace(/</g,'\\u003c');
+    var base=':root{--negro:#000;--blanco:#fff;--gris-1:#f3f3f3;--gris-2:#dcdcdc;--gris-3:#6b6b6b;--gris-4:#444}html{scrollbar-width:thin;scrollbar-color:#000 #f3f3f3}body{margin:0 auto;padding:24px;font:15px/1.45 Archivo,Helvetica,Arial,sans-serif;background:#fff;color:#000;max-width:1100px}h1,h2{overflow-wrap:anywhere;font-weight:800;margin:0 0 8px}:focus-visible{outline:2px solid #000;outline-offset:2px}@media print{body{padding:0}.no-print{display:none!important}}';
+    var css=base+(document.getElementById('dash-css')?document.getElementById('dash-css').textContent:'');
+    var script='var rows='+data+',ctx='+ctx+';'+dashboardApp.toString()+';dashboardApp(document.getElementById("datos")).set(rows,ctx);';
+    var html='<!doctype html><html lang="es-AR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escHtml(nombreMes(mes))+' · 3dF Desarrollos</title><style>'+css+'</style><h1>3dF Desarrollos</h1><h2>Dashboard · '+escHtml(nombreMes(mes))+'</h2><p class="d-nota">Exportado el '+escHtml(fechaAR(hoyISO()))+'.</p><main id="datos"></main><script>'+script+'<\/script></html>';
     return {blob:new Blob([html],{type:'text/html;charset=utf-8'}),nombre:nombreMes(mes)+'.html'};
   }
   $('#dashboard-export').addEventListener('click',function(){var archivo=exportarDashboardHTML($('#dashboard-month').value||mesActual());descargarArchivo(archivo.blob,archivo.nombre);});
@@ -3802,7 +4050,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
       return subirMultipart({name:archivo.nombre,mimeType:'text/html',parents:[driveIds.dashboard]},archivo.blob);
     }).then(function(){ $('#dashboard-status').textContent='Guardado: Dashboard Mensual/'+archivo.nombre+' ✓'; }).catch(function(e){$('#dashboard-status').textContent='No se pudo guardar: '+e.message;}).finally(function(){btn.disabled=false;});
   });
-  function actualizarAvisos(){revisarPlazos();revisarDashboardMensual();if($('#dashboard').open)actualizarDashboard(true);}
+  function actualizarAvisos(){revisarPlazos();revisarDashboardMensual();if($('#dashboard').open)actualizarDashboard();}
   document.addEventListener('visibilitychange',function(){if(!document.hidden)actualizarAvisos();});
   window.addEventListener('focus',actualizarAvisos);
   setInterval(function(){if(!document.hidden)actualizarAvisos();},60000);
@@ -3815,7 +4063,7 @@ td.c-estado{padding-left:2px;padding-right:2px}
         construirExcel: construirExcel,
         armarPDF:armarPDF, planFotos:planFotos,
         mananaISO:mananaISO,
-        filasMes:filasMes, dashboardMarkup:dashboardMarkup, exportarDashboardHTML:exportarDashboardHTML,
+        filasMes:filasMes, dashboardApp:dashboardApp, exportarDashboardHTML:exportarDashboardHTML,
         asegurarCarpetas:asegurarCarpetas, archivoRemoto:archivoRemoto,
         aplicarRemoto:aplicarRemoto, subirFotos:subirFotos,
         testToken:function(token,email){accessToken=token;tokenExp=Date.now()+3600000;cloudUser={email:email};driveIds.email=email;},
