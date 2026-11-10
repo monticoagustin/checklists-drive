@@ -3251,8 +3251,26 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
       return null;
     });
   }
-  function exportarInformacion(){
+  function nombreExportador(){
+    // Nombre de quien exporta: perfil de Google; si no hay sesión, se pregunta (queda en el archivo para quien lo importe).
+    var carga = (tokenValido() && !(cloudUser && String(cloudUser.nombre || '').trim())) ? cargarUsuario().catch(function(){}) : Promise.resolve();
+    return carga.then(function(){
+      var perfil = cloudUser && String(cloudUser.nombre || '').trim();
+      if (perfil) return perfil;
+      var email = emailSesion();
+      var sugerido = (email && email.indexOf('@') > 0) ? email.split('@')[0].replace(/[._]+/g, ' ') : '';
+      var ingresado = window.prompt('Tu nombre (queda guardado en el archivo exportado):', sugerido);
+      if (ingresado == null) { var err = new Error('Exportación cancelada.'); err.cancelado = true; throw err; }
+      return String(ingresado).trim();
+    });
+  }
+  function exportarInformacion(opts){
+    opts = opts || {};
+    var exportador = '';
     return asegurarJSZip().then(function(){
+      return opts.exportador != null ? String(opts.exportador).trim() : nombreExportador();
+    }).then(function(n){
+      exportador = n;
       sincronizar();
       var obra = obraActiva();
       var tabs = (state.tabs || []).filter(function(t){ return norm(obraDe(t)) === norm(obra); }).map(function(t){
@@ -3288,7 +3306,11 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
           app: '3df-checklist',
           exportedAt: new Date().toISOString(),
           exportedBy: emailSesion(),
-          exportedByName: (cloudUser && cloudUser.nombre) || '',
+          exportedByName: exportador,
+          // Dueño de los datos: si se exporta una versión importada, sigue siendo de quien la exportó primero.
+          owner: reg && reg.empleado
+            ? { nombre: reg.empleado, email: reg.exportedBy || '' }
+            : { nombre: exportador, email: emailSesion() },
           versionId: vid,
           versionLabel: vid === VERSION_OFICIAL ? 'Oficial' : textoBadge().replace(/^Viendo:\s*/, ''),
           obra: { id: slugNombre(obra), nombre: obra },
@@ -3405,13 +3427,18 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     var activa = tabs.some(function(t){ return t.id === doc.activa; }) ? doc.activa : tabs[0].id;
     return { meta: meta, tabs: tabs, activa: activa };
   }
-  function pedirNombreEmpleado(){
-    var perfil = cloudUser && String(cloudUser.nombre || '').trim();
-    if (perfil) return perfil;
+  function duenioDelArchivo(manifest){
+    manifest = manifest || {};
+    var o = manifest.owner || {};
+    return String(o.nombre || manifest.empleado || manifest.exportedByName || '').trim();
+  }
+  function pedirNombreEmpleado(manifest){
+    // Archivos viejos sin nombre del dueño: se pregunta, sugiriendo el mail de quien exportó (no el de quien importa).
+    manifest = manifest || {};
     var sugerido = '';
-    var email = emailSesion();
+    var email = (manifest.owner && manifest.owner.email) || manifest.exportedBy || '';
     if (email && email.indexOf('@') > 0) sugerido = email.split('@')[0].replace(/[._]+/g, ' ');
-    var ingresado = window.prompt('Nombre del empleado para la carpeta de la versión:', sugerido);
+    var ingresado = window.prompt('El archivo no dice de quién es. Nombre del dueño para la versión:', sugerido);
     if (ingresado == null) {
       var err = new Error('Importación cancelada.');
       err.cancelado = true;
@@ -3446,7 +3473,10 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
             obra: obraNombre,
             obraSlug: slugNombre(obraNombre),
             obras: [slugNombre(obraNombre)],
-            exportedBy: (paquete.manifest && paquete.manifest.exportedBy) || '',
+            exportedBy: (paquete.manifest && ((paquete.manifest.owner && paquete.manifest.owner.email) || paquete.manifest.exportedBy)) || '',
+            exportadoPor: (paquete.manifest && paquete.manifest.exportedByName) || '',
+            exportadoEn: (paquete.manifest && paquete.manifest.exportedAt) || '',
+            importadoPor: emailSesion(),
             schemaVersion: 1
           };
           var cat = catalogoVersiones().filter(function(v){ return v && v.id !== nuevoId; });
@@ -3487,8 +3517,9 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     if (!file) return Promise.resolve();
     return asegurarJSZip().then(function(){ return JSZip.loadAsync(file); }).then(leerPaquete).then(function(paquete){
       if (opts.empleado && String(opts.empleado).trim()) return { paquete:paquete, empleado:String(opts.empleado).trim() };
-      var carga = (tokenValido() && !(cloudUser && String(cloudUser.nombre || '').trim())) ? cargarUsuario().catch(function(){}) : Promise.resolve();
-      return carga.then(pedirNombreEmpleado).then(function(empleado){ return { paquete:paquete, empleado:empleado }; });
+      var duenio = duenioDelArchivo(paquete.manifest);
+      if (duenio) return { paquete:paquete, empleado:duenio };
+      return { paquete:paquete, empleado:pedirNombreEmpleado(paquete.manifest) };
     }).then(function(ctx){ return aplicarImportacion(ctx.paquete, ctx.empleado); });
   }
   function correrExportacion(){
@@ -3499,6 +3530,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
         estadoNube('Exportación lista');
       });
     }).catch(function(e){
+      if (e && e.cancelado) { estadoNube('Exportación cancelada'); return; }
       estadoNube('No se pudo exportar');
       alert((e && e.message) || 'No se pudo exportar.');
     }).then(function(){
