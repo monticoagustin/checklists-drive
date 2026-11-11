@@ -1117,6 +1117,36 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     }
   });
 
+  // Código del documento: solo lectura; editarlo exige confirmar para evitar errores
+  (function(){
+    var cod = document.getElementById('codigo');
+    if (!cod) return;
+    var previo = '';
+    cod.title = 'Tocá dos veces para editar (te pedimos confirmación)';
+    function cerrar(guardarCambio){
+      if (cod.readOnly) return;
+      var nuevo = cod.value.trim();
+      if (guardarCambio && nuevo && nuevo !== previo) {
+        if (confirm('¿Cambiar el código de "' + previo + '" a "' + nuevo + '"? Queda en las planillas y exportaciones.')) { state.meta.codigo = nuevo; guardar(); }
+      }
+      cod.value = state.meta.codigo || '';
+      cod.readOnly = true;
+    }
+    cod.addEventListener('dblclick', function(){
+      if (!cod.readOnly) return;
+      if (!confirm('¿Querés editar el código "' + (state.meta.codigo || '') + '"? Es el código del documento y aparece en el Excel y el PDF.')) return;
+      previo = state.meta.codigo || '';
+      cod.readOnly = false; cod.focus(); cod.select();
+    });
+    cod.addEventListener('keydown', function(e){
+      if (cod.readOnly) { if (e.key === 'Enter') { e.preventDefault(); cod.dispatchEvent(new Event('dblclick')); } return; }
+      if (e.key === 'Enter') { e.preventDefault(); cod.blur(); }
+      else if (e.key === 'Escape') { e.preventDefault(); cod.value = previo; cod.blur(); }
+    });
+    cod.addEventListener('blur', function(){ cerrar(true); });
+    cod.setAttribute('tabindex', '0');
+  })();
+
   // Encabezado editable (Obra es por pestaña; meta.obra queda como default de obras nuevas)
   document.querySelectorAll('[data-meta]').forEach(function(i){
     var key = i.getAttribute('data-meta');

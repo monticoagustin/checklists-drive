@@ -40,6 +40,7 @@ Los datos son del ingeniero y viven en su Drive como un Excel común (`{obra}.xl
 - Google Identity Services + Drive API, scope `drive.file`. El Client ID no es secreto, pero no se cambia sin avisar al dueño.
 - Sesión de Google dura ~1 h; no se guarda sesión permanente.
 - Fotos comprimidas a máx. 1280 px.
+- El código del documento (ej. R-D00-P17) es de solo lectura; se edita con doble clic/toque y confirmación previa, y otra confirmación al guardar el cambio.
 - Columnas del Excel fijas (`id`, `Fecha`, `Tarea`, `Piso`, `Unidad`, `Ambiente`, `Ejecutado`, `Rubro`, `Contratista`, `Ingresado`, `FotosIds`, `TabId`, `Plazo`, `Importante`, `CompletadoEn`, `CreadoEn`) y hoja `Config`: cambiarlas rompe la compatibilidad con los Excel existentes.
 - Git: commits locales libres; push a GitHub y publicación en vivo (3df/index.html en el Space de Spacefast) son pasos separados y solo cuando el dueño lo pide.
 - **Decisión abierta — norma ISO:** el proyecto exige cumplir "las normas ISO", pero la norma concreta no está definida. No asumir ninguna (ni ISO 9001 ni otra) hasta que el dueño la confirme; mientras tanto, no quitar ni debilitar registros, fechas, autoría, versiones ni trazabilidad existentes.
