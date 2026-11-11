@@ -31,6 +31,8 @@ Los datos son del ingeniero y viven en su Drive como un Excel común (`{obra}.xl
 - Sincroniza al iniciar sesión, con "Sincronizar ahora", al volver a la app y ~2 s después de cada cambio. Conflicto app vs. Excel: se pregunta y se resuelve por archivo entero.
 - Exportar PDF/CSV (pestaña visible con filtros), Excel (todas las pestañas visibles), ZIP "Exportar / Importar información" para pasar datos entre empleados. Compartir por WhatsApp.
 - Dashboard para gerencia: cinco indicadores (% ejecutado, vencidas, vencen en 7 días, completadas en el mes, cantidad de obras), estado por obra con barra de avance y vencidas, completadas por semana, ranking de contratistas con más vencidas y detalle de tareas. Filtra por obra, piso, rubro y contratista; tocar un indicador, obra o contratista filtra todo. Imprime / guarda PDF y se descarga como HTML interactivo. Sin semáforo ni umbrales propios hasta que la dirección defina un criterio. Aviso de tareas que vencen mañana.
+- Al subir una foto (cámara o galería) se abre el editor: lápiz con 6 colores y 3 grosores, deshacer y borrar todo; "Subir foto" guarda con o sin marcas.
+- Las pestañas de una obra representan unidades (por ejemplo, 2-A). El nombre de la pestaña no completa piso ni unidad: se cargan en cada tarea.
 - Escritorio: tabla. Celular: tarjetas.
 
 ## Capabilities and Constraints
