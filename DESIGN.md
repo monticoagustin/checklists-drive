@@ -174,7 +174,7 @@ Monocromo estricto: el negro y el blanco hacen todo el trabajo y los grises solo
 - **Gris grafito** (gris-4): texto secundario sobre blanco (notas, metadatos, títulos de grupo) y línea inferior de los campos del encabezado.
 
 ### Tertiary
-- **Marcador rojo** (marcador-rojo) y **marcador amarillo** (marcador-amarillo): solo como colores de lápiz en el editor de fotos, para marcar sobre la imagen. Nunca en la interfaz.
+- **Marcadores** rojo (`#e11d1d`), amarillo (`#ffd400`), verde (`#16a34a`) y azul (`#1d4ed8`), más negro y blanco: solo como colores de lápiz en el editor de fotos, para marcar sobre la imagen. Nunca en la interfaz.
 
 ### Named Rules
 **La regla de la tinta única.** La interfaz usa negro, blanco y grises. Un color nuevo solo entra si representa un dato, y pasa primero por DESIGN.md.
@@ -281,13 +281,13 @@ Componente propio del sistema: un botón que ocupa todo el ancho de la celda y a
 - La insignia de versión ("Viendo: Oficial") es una caja con borde blanco de 1px, en 700/12px.
 
 ### Modales
-- Todo panel superpuesto (Drive, confirmar foto, visor, editor de fotos) es `role="dialog"` con `aria-modal`: al abrir lleva el foco adentro, Tab no sale, Escape cierra y el foco vuelve al control que lo abrió. El dashboard usa `<dialog>` nativo.
+- Todo panel superpuesto (Drive, visor, editor de fotos) es `role="dialog"` con `aria-modal`: al abrir lleva el foco adentro, Tab no sale, Escape cierra y el foco vuelve al control que lo abrió. El dashboard usa `<dialog>` nativo.
 - Velo negro al 72%. Caja blanca con borde de 2px, recta y sin sombra, de hasta 460px de ancho (1050px el dashboard). La X para cerrar tiene un área de toque de 44px.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** usar solo los tokens de negro, blanco y grises en la interfaz. Los marcadores rojo y amarillo quedan dentro del editor de fotos.
+- **Do** usar solo los tokens de negro, blanco y grises en la interfaz. Los marcadores de color quedan dentro del editor de fotos.
 - **Do** cerrar cada control y contenedor con un borde negro de 2px y radio 0.
 - **Do** marcar lo activo o elegido invirtiendo a negro con texto blanco.
 - **Do** usar Archivo 800 con `tabular-nums` para toda cifra que se compare (totales, %, avance por obra o piso).

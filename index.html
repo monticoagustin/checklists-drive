@@ -289,13 +289,6 @@ td.c-estado{padding-left:2px;padding-right:2px}
 .foto-borrar svg{width:12px;height:12px}
 .foto-borrar:focus-visible{outline:2px solid var(--negro);outline-offset:2px}
 
-#confirmar-foto{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:rgba(0,0,0,.72);padding:16px}
-#confirmar-foto[hidden]{display:none}
-#confirmar-foto .cf-caja{background:var(--blanco);color:var(--negro);border:2px solid var(--negro);padding:16px;max-width:280px;width:100%;text-align:center}
-#confirmar-foto p{margin:0 0 10px;font-weight:700}
-#confirmar-foto img{display:block;margin:0 auto 12px;max-width:160px;max-height:160px;object-fit:cover;border:2px solid var(--negro)}
-#confirmar-foto .cf-btns{display:flex;gap:8px;justify-content:center}
-#confirmar-foto .cf-si{background:var(--negro);color:var(--blanco);font-weight:700}
 
 #visor{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px}
 #visor[hidden]{display:none}
@@ -722,20 +715,6 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     return d.getFullYear()+'-'+m+'-'+dd;
   }
 
-  function ubicacionTab(t){
-    var m = /^\s*(\d+)\s*-\s*(\d+)\s*$/.exec(t.nombre || '');
-    return m ? {piso:m[1], unidad:m[2]} : null;
-  }
-  function completarUbicacion(t){
-    var u = ubicacionTab(t), cambio = false;
-    if (!u) return false;
-    (t.rows || []).forEach(function(r){
-      ['piso','unidad'].forEach(function(k){
-        if (!String(r[k] == null ? '' : r[k]).trim()) { r[k] = u[k]; cambio = true; }
-      });
-    });
-    return cambio;
-  }
   function actualizarFechaDocumento(){
     var hoy = new Intl.DateTimeFormat('es-AR', {timeZone:'America/Argentina/Buenos_Aires', day:'2-digit', month:'2-digit', year:'numeric'}).format(new Date());
     var cambio = state.meta.fecha !== hoy;
@@ -1192,10 +1171,9 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
   // Nueva tarea
   $('#agregar').addEventListener('click', function(){
     var base = state.rows.length ? state.rows[state.rows.length-1] : {};
-    var ubicacion = ubicacionTab(tabActiva());
     var r = {
       id: state.nextId || (state.rows.length + 1),
-      fecha: hoyISO(), creadoEn:hoyISO(), plazo:'', importante:false, completadoEn:'', tarea:'', piso: ubicacion ? ubicacion.piso : '', unidad: ubicacion ? ubicacion.unidad : '',
+      fecha: hoyISO(), creadoEn:hoyISO(), plazo:'', importante:false, completadoEn:'', tarea:'', piso:'', unidad:'',
       ambiente:'', ejecutado:'NO', rubro:'', contratista:'', ingresado: base.ingresado || ''
     };
     state.nextId = r.id + 1;
@@ -1229,7 +1207,6 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     entregar(blob, '3dF-' + slugTab() + '-' + hoyISO() + '.csv', 'text/csv');
   });
 
-  if (completarUbicacion(tabActiva())) guardar();
   actualizarListas();
   render();
 
@@ -1243,7 +1220,6 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     sincronizar(); state.activa = id;
     var t = tabActiva(); state.rows = t.rows; state.nextId = t.nextId;
     if (t.obra == null || String(t.obra).trim() === '') t.obra = String(state.meta.obra || '').trim() || 'Sin obra';
-    completarUbicacion(t);
     sincronizarCampoObra();
     filtro.rubro = ''; filtro.texto = ''; $('#f-texto').value = '';
     guardar(); actualizarListas(); render(); renderTabs();
@@ -1330,7 +1306,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
         i.setAttribute('aria-label', 'Nombre de la pestaña (tocá para renombrar)');
         i.size = Math.max(6, t.nombre.length + 1);
         i.addEventListener('input', function(){ t.nombre = i.value; i.size = Math.max(6, i.value.length + 1); guardar(); });
-        i.addEventListener('blur', function(){ if (!i.value.trim()) { t.nombre = 'Sin nombre'; i.value = t.nombre; } completarUbicacion(t); guardar(); actualizarListas(); render(); });
+        i.addEventListener('blur', function(){ if (!i.value.trim()) { t.nombre = 'Sin nombre'; i.value = t.nombre; } guardar(); actualizarListas(); render(); });
         i.addEventListener('keydown', function(ev){ if (ev.key === 'Enter' && !ev.isComposing && ev.keyCode !== 229) { ev.preventDefault(); i.blur(); } });
         d.classList.toggle('importante',!!t.importante);
         d.appendChild(botonEstrella(!!t.importante, 'pestaña', function(){ t.importante = !t.importante; guardar(); renderTabs(); }));
@@ -1415,7 +1391,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     var pestaña = tabActiva().nombre, tarea = r.tarea, tomada = new Date(), inicio = r.fotos.length;
     var p = Promise.resolve();
     archivos.forEach(function(f, i){
-      p = p.then(function(){ return comprimir(f); }).then(function(c){ return confirmarFoto(c, i + 1, archivos.length); }).then(function(c){
+      p = p.then(function(){ return comprimir(f); }).then(function(c){ return editarFoto(c, i + 1, archivos.length); }).then(function(c){
         if (!c) return;
         var id = 'f' + Date.now() + Math.random().toString(36).slice(2,7);
         var rec = { id:id, data:c.data, w:c.w, h:c.h, takenAt:tomada.toISOString(), label:nombreFotoDrive(pestaña,tarea,inicio+i,inicio+archivos.length,tomada).replace(/\.jpg$/,'') };
@@ -1483,7 +1459,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
   var edTit = document.createElement('p'); edTit.className = 'ed-tit'; edTit.id = 'ed-tit';
   var edLz = document.createElement('div'); edLz.className = 'ed-lienzo';
   var cv = document.createElement('canvas'); edLz.appendChild(cv);
-  var edTools = document.createElement('div'); edTools.className = 'ed-barra';
+  var edTools = document.createElement('div'); edTools.className = 'ed-barra'; edTools.setAttribute('role','group'); edTools.setAttribute('aria-label','Lápiz: color y grosor');
   var edAcc = document.createElement('div'); edAcc.className = 'ed-barra';
   edOv.appendChild(edTit); edOv.appendChild(edLz); edOv.appendChild(edTools); edOv.appendChild(edAcc);
   document.body.appendChild(edOv);
@@ -1531,7 +1507,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     b.addEventListener('click', fn); return b;
   }
   var swatches = [];
-  [['#e11d1d','Rojo'],['#ffd400','Amarillo'],['#000000','Negro'],['#ffffff','Blanco']].forEach(function(c){
+  [['#e11d1d','Rojo'],['#ffd400','Amarillo'],['#16a34a','Verde'],['#1d4ed8','Azul'],['#000000','Negro'],['#ffffff','Blanco']].forEach(function(c){
     var b = boton('', 'sw', function(){
       lapiz.color = c[0]; swatches.forEach(function(s){ s.setAttribute('aria-pressed', s === b ? 'true' : 'false'); });
     });
@@ -1554,30 +1530,11 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     if (edRes) edRes(salida);
   }
   edAcc.appendChild(boton('Cancelar', 'btn', function(){ cerrarEditor(null); }));
-  var edGuardar = boton('Guardar foto', 'btn pri', function(){
+  var edGuardar = boton('Subir foto', 'btn pri', function(){
     cerrarEditor(trazos.length ? { data: cv.toDataURL('image/jpeg', 0.8), w: cv.width, h: cv.height } : edC);
   });
   edAcc.appendChild(edGuardar);
   edOv.addEventListener('keydown', function(e){ if (e.key === 'Escape') cerrarEditor(null); });
-
-  // Confirmación simple al subir: miniatura + Aceptar / Cancelar (sin editor)
-  var cfOv = document.createElement('div'); cfOv.id = 'confirmar-foto'; cfOv.hidden = true;
-  cfOv.setAttribute('role','dialog'); cfOv.setAttribute('aria-modal','true'); cfOv.setAttribute('aria-labelledby','cf-tit');
-  cfOv.innerHTML = '<div class="cf-caja"><p id="cf-tit"></p><img id="cf-img" alt="Vista previa de la foto"><div class="cf-btns"><button type="button" class="btn" id="cf-no">Cancelar</button><button type="button" class="btn cf-si" id="cf-si">Aceptar</button></div></div>';
-  document.body.appendChild(cfOv);
-  var cfRes = null, cfC = null;
-  function cerrarConfirmar(ok){ cfOv.hidden = true; document.getElementById('cf-img').removeAttribute('src'); var f = cfRes; cfRes = null; if (f) f(ok ? cfC : null); }
-  document.getElementById('cf-si').addEventListener('click', function(){ cerrarConfirmar(true); });
-  document.getElementById('cf-no').addEventListener('click', function(){ cerrarConfirmar(false); });
-  cfOv.addEventListener('keydown', function(e){ if (e.key === 'Escape') cerrarConfirmar(false); });
-  function confirmarFoto(c, n, total){
-    return new Promise(function(res){
-      cfRes = res; cfC = c;
-      document.getElementById('cf-tit').textContent = '¿Subir esta foto' + (total > 1 ? ' (' + n + ' de ' + total + ')' : '') + '?';
-      document.getElementById('cf-img').src = c.data;
-      cfOv.hidden = false; document.getElementById('cf-si').focus();
-    });
-  }
 
   function editarFoto(c, n, total){
     return new Promise(function(res){
@@ -1585,7 +1542,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
       im.onload = function(){
         cv.width = c.w; cv.height = c.h; trazos = []; dibujando = null;
         edImg = im; edRes = res; edC = c;
-        edTit.textContent = 'Editar foto' + (total > 1 ? ' ' + n + ' de ' + total : '') + ' - dibujá con el dedo o con el lápiz. Si no hace falta, tocá Guardar foto.';
+        edTit.textContent = 'Foto' + (total > 1 ? ' ' + n + ' de ' + total : '') + ': marcala con el lápiz si hace falta (elegí color y grosor). Después tocá Subir foto.';
         if (edOv.hidden) focoAntesEditor = document.activeElement;
         redibujar(); edOv.hidden = false; edGuardar.focus();
       };
@@ -2902,7 +2859,6 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     for (var i = 0; i < state.tabs.length; i++) if (!state.tabs[i].oculta) { vis = state.tabs[i]; break; }
     if (tabActiva().oculta && vis) state.activa = vis.id;
     var t = tabActiva(); state.activa = t.id; state.rows = t.rows; state.nextId = t.nextId;
-    completarUbicacion(t);
     recordarHojas(doc);
     try { localStorage.setItem(KEY, JSON.stringify({ meta:state.meta, tabs:state.tabs, activa:state.activa })); } catch(e){}
     document.querySelectorAll('[data-meta]').forEach(function(i){
@@ -3098,7 +3054,6 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     if (tabActiva().oculta && vis) state.activa = vis.id;
     var t = tabActiva();
     state.activa = t.id; state.rows = t.rows; state.nextId = t.nextId || 1;
-    completarUbicacion(t);
     actualizarFechaDocumento();
     try { localStorage.setItem(KEY, JSON.stringify({ meta:state.meta, tabs:state.tabs, activa:state.activa })); } catch(e){}
     document.querySelectorAll('[data-meta]').forEach(function(i){
