@@ -97,7 +97,7 @@ header :focus-visible{outline-color:var(--blanco)}
   background:transparent;color:var(--blanco);border:2px solid var(--blanco);
 }
 .version-badge{overflow-wrap:anywhere}
-#version-oficial[hidden],#importar-archivo[hidden]{display:none}
+#version-oficial[hidden],#version-quitar[hidden],#importar-archivo[hidden]{display:none}
 .ficha{
   display:grid;grid-template-columns:64px minmax(106px,1fr);gap:8px 12px;
   font-size:12px;color:var(--gris-2);text-align:left;align-items:center;align-self:flex-start;
@@ -1132,6 +1132,20 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     });
     cod.setAttribute('tabindex', '0');
   })();
+
+  // El desplegable de versiones termina donde empieza "+ Nueva obra" (solo cambia el ancho)
+  function ajustarAnchoVersion(){
+    var sel = document.getElementById('version-selector');
+    var nueva = document.getElementById('agregar-obra');
+    if (!sel || !nueva) return;
+    sel.style.width = '';
+    if (window.matchMedia('(max-width:520px)').matches) return;
+    var w = nueva.getBoundingClientRect().left - sel.getBoundingClientRect().left;
+    if (w >= 120) sel.style.width = Math.round(w) + 'px';
+  }
+  window.addEventListener('resize', ajustarAnchoVersion);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarAnchoVersion);
+  setTimeout(ajustarAnchoVersion, 0);
 
   // Encabezado editable (Obra es por pestaña; meta.obra queda como default de obras nuevas)
   document.querySelectorAll('[data-meta]').forEach(function(i){
@@ -3139,6 +3153,7 @@ button.d-kpi[aria-pressed=false]:hover{background:var(--gris-1,#f3f3f3)}
     if (btn) btn.hidden = id === VERSION_OFICIAL;
     var quitar = document.getElementById('version-quitar');
     if (quitar) quitar.hidden = id === VERSION_OFICIAL;
+    if (typeof ajustarAnchoVersion === 'function') setTimeout(ajustarAnchoVersion, 0);
     if (!sel) return;
     var obraSlug = slugNombre(obraActiva());
     var vistos = {};
